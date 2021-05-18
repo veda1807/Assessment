@@ -1,38 +1,76 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.my-startbtn {
+  margin-top:17%;
+  margin-left:46%;
+  width:200px;
+  height:70px;
+  font-size:x-large;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.my-questionpg {
+  border: 1px solid black;
+  margin: 20px;
+  height:680px;
 }
+ 
+.my-card {
+  margin-top:20px;
+  margin-left:20px;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-right:20px;
+  height : 540px;
+  width:85%;
+  margin-left: 7%;
+}  
+.my-questionpg .sidebar {
+  margin-top:40px;
+  margin-left:20px;
 }
-
-.App-link {
-  color: #61dafb;
+.my-questionpg .sidebar .details {
+  margin-right :120px;
 }
+.my-btn {
+  float:right;
+  width:80px;
+  margin-left:10px;
+}
+.my-deadaline {
+  margin-right: 50px;
+}
+.fillups-text .my-input {
+  width:75%;
+  resize: none;
+}
+.my-cardbody-fillups {
+  position:relative;
+}
+.my-cardbody-instructions {
+  position:relative;
+}
+.fillups-text {
+  position:absolute;
+  bottom: 10px;
+  width:100%;
+}
+.my-cardbody-fillups .question {
+  height: 160px;
+  width:100%;
+  overflow: auto;
+  margin: 30px;
+}
+.my-instructions {
+  border: 1px solid black;
+  margin: 20px;
+  height:680px;
+}
+.my-instructions .my-card {
+  margin-top:80px;
+  margin-left:20px;
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  margin-right:20px;
+  height : 540px;
+  width:85%;
+  margin-left: 7%;
+}
+.instructions-text {
+  font-size:large;
 }
