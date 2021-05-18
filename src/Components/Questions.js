@@ -9,8 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Row,Col,InputGroup,Form} from 'react-bootstrap';
 import isEmpty from '../utils/is-empty';
 import NewLine from '../utils/NewLine';
+import CodeQues from './CodeQues.js';
             
-
 class Questions extends Component{
     constructor(props){
         super(props);
@@ -152,17 +152,10 @@ class Questions extends Component{
                             <Card.Body>
                                 <Card.Title></Card.Title>
                                 <Card.Text>
-                                    {/* <h5>{currentQuestion.question}</h5> */}
-                                    {/* <br></br>
-                                    
-                                    <InputGroup className="mb-3">
-                                        <FormControl
-                                         className="my-input"
-                                        />
-                                    </InputGroup>
-                                    <br></br>  */}
+                                    <h5>{currentQuestion.question}</h5>
+                                    <CodeQues />
                                 </Card.Text>
-                                {/* <Button variant="success">Submit</Button>  */}
+                                <Button variant="success">Submit</Button> 
                             </Card.Body> }
 
                             <Card.Footer>

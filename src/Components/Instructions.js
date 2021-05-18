@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Modal,Form} from 'react-bootstrap';
+import { For } from 'react-loops';
 
 function Instructions(props) {
+    var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);
 
     function onChange() {
@@ -23,6 +25,9 @@ function Instructions(props) {
                             <li>Marks will be awarded if you attempt the quiz before the deadline.</li>
                             <li>Navigating to other tabs is considered as malpractice.</li>
                             <li>If you are stuck at any question you can quit the quiz and reattempt it later.</li>
+                            <For of={instructions} as={item =>
+                                <li>{item}</li>
+                            }/>
                             <Form>
                                 <Form.Group controlId="formBasicCheckbox">
                                     <Form.Check type="checkbox" label="Check me out" onChange={onChange}/>
