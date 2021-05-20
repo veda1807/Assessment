@@ -2,9 +2,8 @@
 .my-startbtn {
   margin-top:17%;
   margin-left:46%;
-  width:200px;
-  height:70px;
-  font-size:x-large;
+  width:100px;
+  height:40px;
 }
 .my-questionpg {
   border: 1px solid black;
@@ -45,6 +44,7 @@
 }
 .my-cardbody-instructions {
   position:relative;
+  overflow: auto;
 }
 .fillups-text {
   position:absolute;
@@ -55,7 +55,6 @@
   height: 160px;
   width:100%;
   overflow: auto;
-  margin: 30px;
 }
 .my-instructions {
   border: 1px solid black;
@@ -73,4 +72,19 @@
 }
 .instructions-text {
   font-size:large;
+}
+.report {
+  margin: 3%;
+}
+.my-resultspg{
+  margin:1%;
+}
+.results {
+  width:80%;
+  /* border:1px solid black; */
+  margin : 0% 10% 0% 10%;
+  border: 1px solid black;
+}
+.results-thead {
+  border-bottom: 1px solid;
 }

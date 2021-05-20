@@ -69,9 +69,9 @@ class Questions extends Component{
         const{ intervalId, totalTimeTaken, timer} = this.state;
         clearInterval(intervalId);
         this.setState({
-            intervalId: undefined,
-            totalTimeTaken: timer
+            intervalId: undefined
         });
+        this.props.showResults(this.state);
         console.log(this.state.totalTimeTaken);
     }
 
@@ -160,9 +160,7 @@ class Questions extends Component{
 
                             <Card.Footer>
                             {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion} >Next</Button>}
-                            <Link to="/results">
-                            {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish}  to="/Results">Finish</Button>}
-                            </Link>
+                            {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish} >Finish</Button>}
                             <Link to="/">
                                 <Button variant="danger" className="my-btn"  to="/">Quit</Button>
                             </Link>

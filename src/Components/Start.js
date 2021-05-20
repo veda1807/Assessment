@@ -12,10 +12,10 @@ import {Card,Button,Modal,Form} from 'react-bootstrap';
 function Start() {
 
     return (
-        <div className="my-startbtn">
+        <div>
             <Link to="/quiz">
-                <Button variant="success" to="/quiz" > 
-                    Start Quiz
+                <Button className="my-startbtn" variant="success" to="/quiz" > 
+                    Start
                 </Button>
             </Link>
         </div>
