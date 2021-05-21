@@ -157,7 +157,6 @@ class Questions extends Component{
                                         question = {currentQuestion.question}
                                     />
                                 </Card.Text>
-                                {/* <Button variant="success">Submit</Button>  */}
                             </Card.Body> }
 
                             <Card.Footer>
