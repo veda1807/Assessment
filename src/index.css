@@ -11,7 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 } */
-.editor-window{
+/* .editor-window{
   width: 400px;
   height: 500px;
 }
@@ -22,13 +22,13 @@ code {
   border:5px solid gray;
   margin: 0;
   width: 30%;
-}
+} */
 /* .code-area{
   width: 100px;
   height: 100px;
 
 } */
-.editor-window {
+/* .editor-window {
   width: 400px;
   height: 500px;
 
@@ -45,4 +45,4 @@ code {
 }
 .c1 .cm-scroller{
   height: 450px;
-}
+} */

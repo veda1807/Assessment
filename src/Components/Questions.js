@@ -152,10 +152,11 @@ class Questions extends Component{
                             <Card.Body>
                                 <Card.Title></Card.Title>
                                 <Card.Text>
-                                    <h5>{currentQuestion.question}</h5>
-                                    <CodeQues />
+                                    {/* <h5>{currentQuestion.question}</h5> */}
+                                    <CodeQues 
+                                        question = {currentQuestion.question}
+                                    />
                                 </Card.Text>
-                                <Button variant="success">Submit</Button> 
                             </Card.Body> }
 
                             <Card.Footer>

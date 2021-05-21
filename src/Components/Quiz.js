@@ -9,7 +9,7 @@ function Quiz() {
     const [questions, setQuestions] = useState([]);
     const [instructions, setInstructions] = useState([]);
 
-    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
+    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
 
     function acceptedInstructions(){
         setIsInstructions(false);
