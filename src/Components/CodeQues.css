@@ -8,8 +8,10 @@
 
 .question {
     display: flex;
+    font-size: larger;
     flex-direction: column;
     flex-basis: 100%;
+    font-weight: bold;
     /* flex: 1; */
 }
 
@@ -22,7 +24,7 @@
 
 .sample {
     font-family: monospace;
-    
+    font-weight: normal;
 }
 
 @media screen and (min-width: 500px){

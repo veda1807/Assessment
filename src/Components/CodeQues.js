@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import Editor from "./Editor.js";
 import "./CodeQues.css"
 
-export default function CodeQues() {
+export default function CodeQues(props) {
 
     const [view, setView] = useState(null);
     const [result, setResult] = useState("");
-
 
     const runCode = () => {
         if (view === null) return;
@@ -26,13 +25,13 @@ export default function CodeQues() {
         <div>
             <div className = "coding-assessment">
                 <div className = "question">
-                    question
-                    <div className = "sample input">
+                    {props.question}
+                    {/* <div className = "sample input">
                         sample input
                     </div>
                     <div className = "sample output">
                         sample output
-                    </div>
+                    </div> */}
                 </div>
                 <div className = "code">
                     <div className = "editor" id = "editor">
@@ -59,5 +58,6 @@ export default function CodeQues() {
                     </div>                    
                 </div>
             </div>
-        </div>    )
+        </div>
+    )
 }
