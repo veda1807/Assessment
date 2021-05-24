@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import  './index.css';
+// import  './index.css';
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -10,8 +10,9 @@ import {
 } from "react-router-dom";
 
 import Start  from "./Components/Start.js";
-import Results  from "./Components/Results.js";
+import FillupResults  from "./Components/Results.js";
 import Quiz  from "./Components/Quiz.js";
+// import Programs from './Components/Programs';
 function App() {
   return (
     <div className="App">
@@ -23,9 +24,9 @@ function App() {
           <Route path="/quiz">
             <Quiz />
           </Route>
-          <Route path="/results">
-            <Results />
-          </Route>  
+          {/* <Route path="/programs">
+            <Programs />
+          </Route>   */}
         </Switch>   
       </Router>
     </div>

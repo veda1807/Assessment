@@ -1,50 +1,79 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Table,Row,Col} from 'react-bootstrap';
 import TableScrollbar from 'react-table-scrollbar';
 import { For } from 'react-loops';
 import NewLine from '../utils/NewLine'
+import FetchData from "../utils/FetchData"
 
 function Results(props) {
+
+  const [showResults, setShowResults] = useState(false);
+  const [tableData, setTableData] = useState([]);
+  const [isFillupExist, setIsFillupExist] = useState(false);
+  const {data,isLoading,reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
+
+  if(!isLoading && !showResults){//
+    let tableData = [];
+    for(let i =0; i < props.questions.length; i++){
+      if(props.questions[i].type == "Fillup" ){
+        setIsFillupExist(true);
+        let tdData = {
+          key: props.questions[i].key,
+          question: props.questions[i].question,
+          answer: data.answers[i].answer
+        }
+        tableData.push(tdData);
+      }
+    }
+    setTableData(tableData);
+    setShowResults(true);
+  }// 
+
+
   return (
     <div className="my-instructions">
-      <h2 className="text-center my-resultspg">Results</h2>
-      <div className="report">
-        <Row>
-          <Col sm="6" className="text-center"><b>Score:</b></Col>
-          <Col sm="6" className="text-center"><b>Time:{props.timeTaken}</b></Col>
-        </Row>
-        <Row>
-          <Col sm="6" className="text-center"><b>Percentage</b>:</Col>
-          <Col sm="6" className="text-center"><b>Status:</b></Col>
-        </Row>
-      </div>
+      
+    {showResults &&
+      <div>
+        <h2 className="text-center my-resultspg">Results</h2>
+        <div className="report">
+          <Row>
+            <Col sm="6" className="text-center"><b>Score:</b></Col>
+            <Col sm="6" className="text-center"><b>Time:{props.timeTaken}</b></Col>
+          </Row>
+          <Row>
+            <Col sm="6" className="text-center"><b>Percentage</b>:</Col>
+            <Col sm="6" className="text-center"><b>Status:</b></Col>
+          </Row>
+        </div>
 
-      <div className="results">
-      <TableScrollbar  height="406px">
-          <Table striped bordered hover variant="light" className="results-table">
-            <thead className="results-thead">
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>Answer</th>
-                <th>Correctness</th>
-              </tr>
-            </thead>
-            <tbody className="results-tbody">
-            <For of={props.questions} as={question =>
-              <tr>
-                <td>{question.key}</td>
-                <td><NewLine text={question.question}></NewLine></td>
-                <td></td>
-                <td></td>
-              </tr>
-              }/>
-            </tbody>
-          </Table>
-        </TableScrollbar>
-      </div>
+        {isFillupExist &&<div className="results">
+        <TableScrollbar  height="406px">
+            <Table striped bordered hover variant="light" className="results-table">
+              <thead className="results-thead">
+                <tr>
+                  <th>#</th>
+                  <th>Question</th>
+                  <th>Answer</th>
+                  <th>Correctness</th>
+                </tr>
+              </thead>
+              <tbody className="results-tbody">
+                <For of={tableData} as={tdData =>
+                <tr>
+                  <td>{tdData.key}</td>
+                  <td><NewLine text={tdData.question}></NewLine></td>
+                  <td>{tdData.answer}</td>
+                  <td></td>
+                </tr>
+               }/>
+              </tbody>
+            </Table>
+          </TableScrollbar>
+        </div>}
+      </div>}
     </div>
   );
 }

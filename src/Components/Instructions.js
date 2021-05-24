@@ -20,11 +20,9 @@ function Instructions(props) {
                     <Card.Text className="instructions-text">
                         <ul>
                             <li>Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
-                            <li>Clicking on next button redirects to next question.</li>
-                            <li>Clicking on finish button redirects to results page.</li>
-                            <li>Marks will be awarded if you attempt the quiz before the deadline.</li>
-                            <li>Navigating to other tabs is considered as malpractice.</li>
-                            <li>If you are stuck at any question you can quit the quiz and reattempt it later.</li>
+                            <li>Clicking on next button moves to next question.</li>
+                            <li>Clicking on finish button ends the test and shows them results page.</li>
+                            <li>If you are stuck, you can quit, learn and come back to the quiz.</li>
                             <For of={instructions} as={item =>
                                 <li>{item}</li>
                             }/>

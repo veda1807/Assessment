@@ -1,8 +1,17 @@
 
+.flex-parent {
+  display: flex;
+}
+
+.jc-center {
+  margin-top: 20%;
+  justify-content: center;
+}
+.margin-right {
+  margin-right: 20px;
+}
 .my-startbtn {
-  margin-top:17%;
-  margin-left:46%;
-  width:100px;
+  width:150px;
   height:40px;
 }
 .my-questionpg {

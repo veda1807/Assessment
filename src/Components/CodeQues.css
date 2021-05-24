@@ -1,0 +1,49 @@
+.coding-assessment {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.question {
+    display: flex;
+    font-size: larger;
+    flex-direction: column;
+    flex-basis: 100%;
+    font-weight: bold;
+    /* flex: 1; */
+}
+
+.code {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    /* flex: 2; */
+}
+
+.sample {
+    font-family: monospace;
+    font-weight: normal;
+}
+
+@media screen and (min-width: 500px){
+    .question {
+        flex: 1;
+    }
+    .code {
+        flex: 2;
+    }
+}
+
+.btns {
+    margin: 1px;
+}
+
+.btn {
+    /* padding: 5px 20px; */
+    margin: 2px;
+    font-size: medium;
+}
+.reset {
+    float: right;
+}
