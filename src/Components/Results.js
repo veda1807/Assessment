@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Table,Row,Col} from 'react-bootstrap';
 import TableScrollbar from 'react-table-scrollbar';
 import { For } from 'react-loops';
-import NewLine from '../utils/NewLine'
-import FetchData from "../utils/FetchData"
+import NewLine from '../utils/NewLine';
+import FetchData from "../utils/FetchData";
 
 function Results(props) {
 

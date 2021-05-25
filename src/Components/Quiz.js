@@ -12,6 +12,8 @@ function Quiz() {
     const [instructions, setInstructions] = useState([]);
     const [answers, setAnswer] = useState([]);
     const [timeTaken, setTimeTaken] = useState("00:00:00");
+    const [studentAnswerList, setStudentAnswerList] = useState([])
+
     // const url = getUrl(props.type);
 
     const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
@@ -35,6 +37,7 @@ function Quiz() {
 
     function showResult(childQuestionsstate){
         setTimeTaken(childQuestionsstate.timer);
+        setStudentAnswerList(childQuestionsstate.studentAnswerList)
         setIsInstructions(false);
         setIsQuestions(false);
         setIsResults(true);
@@ -45,7 +48,7 @@ function Quiz() {
             {isLoading && <p>Loading...</p>}
             {!isLoading && isInstructions && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
             {!isLoading && isQuestions && <Questions questions={data.questions} showResults = {showResult}/>}
-            {!isLoading && isResults && <Results questions={data.questions} type={data.questions[0].type} timeTaken={timeTaken}/>}
+            {!isLoading && isResults && <Results questions={data.questions}  timeTaken={timeTaken} studentAnswerList={studentAnswerList}/>}
         </div>
         
     );

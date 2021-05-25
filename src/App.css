@@ -65,6 +65,10 @@
   width:100%;
   overflow: auto;
 }
+ 
+.my-cardbody-fillups .question p{
+  margin-bottom: 0rem;
+}
 .my-instructions {
   border: 1px solid black;
   margin: 20px;
