@@ -74,6 +74,20 @@ export default function CodeQues(props) {
                     </div>
                 </Col>
                 <Col sm="4">
+                    
+                    {isEditor && <div className="output">
+                        <div className = "output-window">
+                            <h6>Output:</h6>
+                            <iframe
+                                title = "output"
+                                srcDoc = {result}
+                                frameBorder = "1px"
+                                width = "100%"
+                                height = "85%"
+                                overflow = "auto"
+                            />
+                        </div>                    
+                    </div>}
                     <div className="editor-question-btn">
                         <ButtonGroup toggle>
                             {radios.map((radio, idx) => (
@@ -92,19 +106,6 @@ export default function CodeQues(props) {
                             ))}
                         </ButtonGroup>
                     </div>
-                    {isEditor && <div className="output">
-                        <div className = "output-window">
-                            <h6>Output:</h6>
-                            <iframe
-                                title = "output"
-                                srcDoc = {result}
-                                frameBorder = "1px"
-                                width = "100%"
-                                height = "85%"
-                                overflow = "auto"
-                            />
-                        </div>                    
-                    </div>}
                 </Col>
             </Row>   
         </div>

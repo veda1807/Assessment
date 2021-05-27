@@ -2,14 +2,24 @@ import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Modal,Form} from 'react-bootstrap';
 import { For } from 'react-loops';
+import {useDispatch} from 'react-redux';
+import {submit} from '../actions';
+
 
 function Instructions(props) {
     var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);
+    const dispatch = useDispatch();
 
     function onChange() {
         setDisabled(!disabled);
     }
+
+    function onClick() {
+        props.onAcceptedInstructions();
+        dispatch(submit())
+    }
+    
     return(
         <div className="my-instructions">
             <Card className="my-card">
@@ -35,7 +45,7 @@ function Instructions(props) {
                     </Card.Text>
                 </Card.Body> 
                 <Card.Footer>
-                <Button disabled={disabled} onClick={props.onAcceptedInstructions} className="my-btn" variant="success btn-right">Submit</Button>
+                <Button disabled={disabled} onClick={onClick} className="my-btn" variant="success btn-right">Submit</Button>
                 </Card.Footer>
             </Card>
         </div>

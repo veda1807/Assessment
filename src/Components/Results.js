@@ -7,13 +7,14 @@ import { For } from 'react-loops';
 import NewLine from '../utils/NewLine';
 import FetchData from "../utils/FetchData";
 
+
 function Results(props) {
 
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
   const {data,isLoading,reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
-
+ 
   if(!isLoading && !showResults){//
     let tableData = [];
     for(let i =0; i < props.questions.length; i++){
@@ -41,7 +42,7 @@ function Results(props) {
         <div className="report">
           <Row>
             <Col sm="6" className="text-center"><b>Score:</b></Col>
-            <Col sm="6" className="text-center"><b>Time:{props.timeTaken}</b></Col>
+            <Col sm="6" className="text-center"><b>Time:{props.timer[0] < 10 ? '0'+ props.timer[0] : props.timer[0]}:{props.timer[1] < 10 ? '0'+ props.timer[1] : props.timer[1]}:{props.timer[2] < 10 ? '0'+ props.timer[2] : props.timer[2]}</b></Col>
           </Row>
           <Row>
             <Col sm="6" className="text-center"><b>Percentage</b>:</Col>

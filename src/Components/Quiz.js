@@ -11,7 +11,7 @@ function Quiz() {
     const [questions, setQuestions] = useState([]);
     const [instructions, setInstructions] = useState([]);
     const [answers, setAnswer] = useState([]);
-    const [timeTaken, setTimeTaken] = useState("00:00:00");
+    const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
     // const url = getUrl(props.type);
@@ -36,7 +36,7 @@ function Quiz() {
     }
 
     function showResult(childQuestionsstate){
-        setTimeTaken(childQuestionsstate.timer);
+        setTimer(childQuestionsstate.timer);
         setStudentAnswerList(childQuestionsstate.studentAnswerList)
         setIsInstructions(false);
         setIsQuestions(false);
@@ -48,7 +48,7 @@ function Quiz() {
             {isLoading && <p>Loading...</p>}
             {!isLoading && isInstructions && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
             {!isLoading && isQuestions && <Questions questions={data.questions} showResults = {showResult}/>}
-            {!isLoading && isResults && <Results questions={data.questions}  timeTaken={timeTaken} studentAnswerList={studentAnswerList}/>}
+            {!isLoading && isResults && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
         </div>
         
     );

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import {
     BrowserRouter as Router,
     Switch,
@@ -10,218 +10,149 @@ import {Card,Button,Row,Col,InputGroup,Form, Modal  } from 'react-bootstrap';
 import isEmpty from '../utils/is-empty';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
+import {useDispatch} from 'react-redux';
+import {next,results} from '../actions';
+import { useStopwatch } from 'react-timer-hook';
             
-class Questions extends Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            loading: true,
-            questions: props.questions,
-            currentQuestion: [],
-            nextQuestion: [],
-            previousQuestion: [],
-            answer: [],
-            numberOfQuestions: 0,
-            currentQuestionIndex: 0,
-            score: 0,
-            correctAnswers: 0,
-            wrongAnswers: 0,
-            time: 0,
-            timer: '00:00:00',
-            isFinish: false,
-            intervalId: undefined,
-            totalTimeTaken: '',
-            text: '',
-            studentAnswerList: [], 
-            studentResponse: '', 
-            // displayResponse: '',
-            answeredQuestions: 0
-        };
+
+function Questions(props) {
+
+    const questions = props.questions;
+    const [currentQuestionIndex, setCurrentQuestionIndex ] = useState(0);
+    const [answeredQuestions, setAnsweredQuestions] = useState(0);
+    const [showQuitWarning, setShowQuitWarning] = useState(false);
+    const [studentResponse, setStudentResponse] = useState('');
+    const [studentAnswerList, setStudentAnswerList] = useState([]);
+    const [displayResponse, setDisplayResponse] = useState('');
+    const {seconds, minutes, hours, pause} = useStopwatch({ autoStart: true });
+    const [displayFinish, setDisplayFinish] = useState(questions.length <= 1 ? true : false);
+
+    const type = questions[currentQuestionIndex].type
+
+    const dispatch = useDispatch();
+
+    function studentInput(e){
+        setStudentResponse(e.target.value);
     }
 
-    studentInput = (e) =>{
-        this.setState({
-            studentResponse: e.target.value 
-        });
-    }
-    recordAnswer = (e) =>{
-        this.setState({
-            studentAnswerList: [...this.state.studentAnswerList, this.state.studentResponse],
-            // studentResponse: '',
-            displayResponse: 'Your response is recorded',
-            answeredQuestions: this.state.answeredQuestions + 1
-        });
+    function recordAnswer(e) {
+        setStudentAnswerList([...studentAnswerList, studentResponse]);
+        setDisplayResponse('Your response is recorded');
+        setAnsweredQuestions(answeredQuestions + 1);
     }
 
-    handleClose(){
-        this.setState({show: false});
-    }
-
-    handleShow(){
-        this.setState({show: true});
-    }
-
-    displayQuestion = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
-      let { currentQuestionIndex, isFinish } = this.state;
-        if( !isEmpty(this.state.questions) ){
-            if(currentQuestionIndex >= questions.length - 1){
-                isFinish = true;
-            }
-            questions = this.state.questions;
-            currentQuestion = questions[currentQuestionIndex];
-            nextQuestion = questions[currentQuestionIndex + 1];
-            previousQuestion = questions[currentQuestionIndex - 1];
-            //const answer = currentQuestion.answer;
-            this.setState({
-                currentQuestion,
-                nextQuestion,
-                previousQuestion,
-                isFinish
-                //answer
-            });
+    function onNext() {
+        setStudentResponse('');
+        setDisplayResponse('');
+        if( currentQuestionIndex < questions.length - 2 ){
+            setCurrentQuestionIndex( currentQuestionIndex + 1 );
+        }else{
+            setCurrentQuestionIndex( currentQuestionIndex + 1 );
+            setDisplayFinish(true);
         }
-    };
-
-    displayNextQuestion = () => {
-        let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
-        this.setState(prevState => ({
-            currentQuestionIndex: prevState.currentQuestionIndex + 1,
-            // text: ''
-            studentResponse: ''
-        }), () => {
-            this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
-        });
-    };
-
-    onFinish = () => {
-        const{ intervalId, totalTimeTaken, timer} = this.state;
-        clearInterval(intervalId);
-        this.setState({
-            intervalId: undefined
-        });
-        this.props.showResults(this.state);
-        console.log(this.state.totalTimeTaken);
+        dispatch(next());
     }
 
-    updateCountdown(){
-        let { time } = this.state;
-        time++;
-        let minutes = Math.floor(time / 60);
-        let hours = Math.floor(minutes / 60);
-        let actMinutes = minutes % 60;
-        let seconds = time % 60;
-      
-        seconds = seconds < 10 ? '0' + seconds : seconds; 
-        actMinutes = actMinutes < 10 ? actMinutes < 1 ? '00' : '0' + actMinutes : actMinutes;
-        hours = hours < 10 ? hours < 1 ? '00' : '0' + hours : hours;
-
-        let timer = ""+hours+":"+actMinutes+":"+seconds;
-      
-        this.setState({
-            time: time,
-            timer: timer
-        });
+    function handleClose() {
+        setShowQuitWarning(false);
     }
 
-    componentDidMount() {
-    
-        const {questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
-        this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
-
-        //set timer
-        var newintervalId = setInterval(this.updateCountdown.bind(this), 1000);
-        this.setState({intervalId: newintervalId});
+    function handleShow() {
+        setShowQuitWarning(true);
     }
 
-    onChangeTeaxtarea = (ele) =>{
-        this.setState({text:ele.target.value});
+    function onFinish() {
+        let params = {
+            questions: questions,
+            timer:[hours, minutes, seconds],
+            studentAnswerList: studentAnswerList
+        }
+        //to pause the timer
+        pause();
+        props.showResults(params);
+        dispatch(results());
     }
 
-    render(){
-
-        const { currentQuestion } = this.state;
-        const questionType = currentQuestion.type;
-
-        return (
-            <div>  
-                <div className="my-questionpg">
-                    <div  className="sidebar">
-                        <div className="details">
+    return (
+        <div>  
+            <div className="my-questionpg">
+                <div  className="sidebar">
+                    <div className="details">
+                        <Row>
+                            
+                            <Col sm="6"><h5 className="text-center">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
+                            <Col sm="6"><h3 className="text-center">{hours < 10 ? '0'+ hours : hours}:{minutes < 10 ? '0'+ minutes : minutes}:{seconds < 10 ? '0'+ seconds : seconds}</h3></Col>
+                            
+                            {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
+                        </Row>
+                    </div>  
+                </div>
+                <div>
+                    <Card className="my-card">
+                        <Card.Header>
                             <Row>
-                                
-                                <Col sm="6"><h5 className="text-center">Answered questions : {this.state.answeredQuestions}/{this.state.questions.length}</h5></Col>
-                                <Col sm="6"><h3 className="text-center">{this.state.timer}</h3></Col>
-                                
-                                {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
+                            <Col><h3 className="text-center">Question {currentQuestionIndex+1}</h3></Col>
+                            {/* <Col sm="6"><label>No of attempts</label>
+                            <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
                             </Row>
-                        </div>  
-                    </div>
-                    <div>
-                        <Card className="my-card">
-                            <Card.Header>
-                                <Row>
-                                <Col><h3 className="text-center">Question {this.state.currentQuestionIndex+1}</h3></Col>
-                                {/* <Col sm="6"><label>No of attempts</label>
-                                <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
-                                </Row>
-                            </Card.Header>
+                        </Card.Header>
 
-                            {/* For fillup type quetions */}
-                            {questionType === "Fillup" &&
-                            <Card.Body className="my-cardbody-fillups">
-                                <Card.Text><div className="question"><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
-                                <Card.Text className="fillups-text">
-                                    <Form.Group controlId="exampleForm.ControlTextarea1" > 
-                                        <h5>Answer</h5>
-                                        <Form.Control as="textarea" value={this.state.studentResponse}  rows={3} onChange={this.studentInput} className="my-input"/>
-                                    </Form.Group>
-                                    <h6>{this.state.displayResponse}</h6>
-                                    <Button variant="success" onClick={this.recordAnswer}>Submit</Button> 
-                                </Card.Text>
-                            </Card.Body> }
+                        {/* For fillup type quetions */}
+                        {type === "Fillup" &&
+                        <Card.Body className="my-cardbody-fillups">
+                            <Card.Text><div className="question"><NewLine className="box" text={questions[currentQuestionIndex].question} /></div></Card.Text>
+                            <Card.Text className="fillups-text">
+                                <Form.Group controlId="exampleForm.ControlTextarea1" > 
+                                    <h5>Answer</h5>
+                                    <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
+                                </Form.Group>
+                                <h6>{displayResponse}</h6>
+                                <Button variant="success" onClick={recordAnswer}>Submit</Button> 
+                            </Card.Text>
+                        </Card.Body> }
 
-                            {/* For editor type questions */}
-                            {questionType === "Editor" &&
-                            <Card.Body>
-                                {/* <h5>{currentQuestion.question}</h5> */}
-                                <CodeQues 
-                                    question = {currentQuestion.question}
-                                />
-                            </Card.Body> }
+                        {/* For editor type questions */}
+                        {type === "Editor" &&
+                        <Card.Body>
+                            {/* <h5>{currentQuestion.question}</h5> */}
+                            <CodeQues 
+                                question = {questions[currentQuestionIndex].question}
+                            />
+                        </Card.Body> }
 
-                            <Card.Footer>
-                                {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion}>Next</Button>}
-                                {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish} >Finish</Button>}
-                                <Button variant="danger" className="my-btn"  onClick={this.handleShow.bind(this)}>Quit</Button>
-                                {/* Show Modal */}
-                                <Modal
-                                    show={this.state.show}
-                                    onHide={this.handleClose.bind(this)}
-                                    backdrop="static"
-                                    keyboard={false}
-                                >
-                                    <Modal.Header closeButton>
-                                    <Modal.Title className="text-center">Quit</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                    Are you stuck in answering the questions? Quit and go back to learn.
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                    <Button variant="secondary" onClick={this.handleClose.bind(this)}>
-                                        Close
-                                    </Button>
-                                    <Link to="/">
-                                        <Button variant="danger">Quit</Button>
-                                    </Link>
-                                    </Modal.Footer>
-                                </Modal>
-                                {/* Modal closed */}
-                            </Card.Footer>
-                        </Card>
-                    </div>
+                        <Card.Footer>
+                            {!displayFinish && <Button variant="primary"className="my-btn" onClick={onNext}>Next</Button>}
+                            {displayFinish && <Button variant="primary" className="my-btn" onClick={onFinish}>Finish</Button>}
+                            <Button variant="danger" className="my-btn" onClick={handleShow}>Quit</Button>
+                            {/* Show Modal */}
+                            <Modal
+                                show={showQuitWarning}
+                                onHide={handleClose}
+                                backdrop="static"
+                                keyboard={false}
+                            >
+                                <Modal.Header closeButton>
+                                <Modal.Title className="text-center">Quit</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                Are you stuck in answering the questions? Quit and go back to learn.
+                                </Modal.Body>
+                                <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Link to="/">
+                                    <Button variant="danger" >Quit</Button>
+                                </Link>
+                                </Modal.Footer>
+                            </Modal>
+                            {/* Modal closed */}
+                        </Card.Footer>
+                    </Card>
                 </div>
             </div>
-    )};
+        </div>
+    );
   }
   
   export default Questions;
