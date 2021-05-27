@@ -12,12 +12,17 @@ import {Card,Button,Modal,Form} from 'react-bootstrap';
 function Start() {
 
     return (
-        <div className="my-startbtn">
+        <div class="flex-parent jc-center">
             <Link to="/quiz">
-                <Button variant="success" to="/quiz" > 
+                <Button className="my-startbtn margin-right" variant="success" to="/quiz" > 
                     Start Quiz
                 </Button>
             </Link>
+            {/* <Link to="/programs">
+                <Button className="my-startbtn" variant="success" to="/programs" > 
+                    Start Coding
+                </Button>
+            </Link> */}
         </div>
         
     );

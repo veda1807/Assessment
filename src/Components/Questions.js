@@ -6,7 +6,7 @@ import {
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,InputGroup,Form} from 'react-bootstrap';
+import {Card,Button,Row,Col,InputGroup,Form, Modal  } from 'react-bootstrap';
 import isEmpty from '../utils/is-empty';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
@@ -31,8 +31,17 @@ class Questions extends Component{
             timer: '00:00:00',
             isFinish: false,
             intervalId: undefined,
-            totalTimeTaken: ''
+            totalTimeTaken: '',
+            text: ''
         };
+    }
+
+    handleClose(){
+        this.setState({show: false});
+    }
+
+    handleShow(){
+        this.setState({show: true});
     }
 
     displayQuestion = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
@@ -59,7 +68,8 @@ class Questions extends Component{
     displayNextQuestion = () => {
         let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
         this.setState(prevState => ({
-            currentQuestionIndex: prevState.currentQuestionIndex + 1
+            currentQuestionIndex: prevState.currentQuestionIndex + 1,
+            text: ''
         }), () => {
             this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
         });
@@ -69,9 +79,9 @@ class Questions extends Component{
         const{ intervalId, totalTimeTaken, timer} = this.state;
         clearInterval(intervalId);
         this.setState({
-            intervalId: undefined,
-            totalTimeTaken: timer
+            intervalId: undefined
         });
+        this.props.showResults(this.state);
         console.log(this.state.totalTimeTaken);
     }
 
@@ -103,6 +113,10 @@ class Questions extends Component{
         //set timer
         var newintervalId = setInterval(this.updateCountdown.bind(this), 1000);
         this.setState({intervalId: newintervalId});
+    }
+
+    onChangeTeaxtarea = (ele) =>{
+        this.setState({text:ele.target.value});
     }
 
     render(){
@@ -137,11 +151,11 @@ class Questions extends Component{
                             {/* For fillup type quetions */}
                             {questionType === "Fillup" &&
                             <Card.Body className="my-cardbody-fillups">
-                                <Card.Text><div className="question"><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
+                                <Card.Text><div><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
                                 <Card.Text className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
                                         <h5>Answer</h5>
-                                        <Form.Control as="textarea" rows={3} className="my-input"/>
+                                        <Form.Control as="textarea" value={this.state.text} rows={3} onChange={this.onChangeTeaxtarea} className="my-input"/>
                                     </Form.Group>
                                     <Button variant="success">Submit</Button> 
                                 </Card.Text>
@@ -157,16 +171,36 @@ class Questions extends Component{
                                         question = {currentQuestion.question}
                                     />
                                 </Card.Text>
+
                             </Card.Body> }
 
                             <Card.Footer>
-                            {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion} >Next</Button>}
-                            <Link to="/results">
-                            {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish}  to="/Results">Finish</Button>}
-                            </Link>
-                            <Link to="/">
-                                <Button variant="danger" className="my-btn"  to="/">Quit</Button>
-                            </Link>
+                                {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion} >Next</Button>}
+                                {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish} >Finish</Button>}
+                                <Button variant="danger" className="my-btn"  onClick={this.handleShow.bind(this)}>Quit</Button>
+                                {/* Show Modal */}
+                                <Modal
+                                    show={this.state.show}
+                                    onHide={this.handleClose.bind(this)}
+                                    backdrop="static"
+                                    keyboard={false}
+                                >
+                                    <Modal.Header closeButton>
+                                    <Modal.Title className="text-center">Quit</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                    Are you stuck in answering the questions? Quit and go back to learn.
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="secondary" onClick={this.handleClose.bind(this)}>
+                                        Close
+                                    </Button>
+                                    <Link to="/">
+                                        <Button variant="danger">Quit</Button>
+                                    </Link>
+                                    </Modal.Footer>
+                                </Modal>
+                                {/* Modal closed */}
                             </Card.Footer>
                         </Card>
                     </div>
