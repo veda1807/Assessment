@@ -5,7 +5,6 @@ import { For } from 'react-loops';
 import {useDispatch} from 'react-redux';
 import {submit} from '../actions';
 
-
 function Instructions(props) {
     var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);

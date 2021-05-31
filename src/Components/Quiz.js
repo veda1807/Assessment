@@ -16,7 +16,7 @@ function Quiz() {
 
     // const url = getUrl(props.type);
 
-    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
+    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
 
     // function getUrl(type){
     //     let url = "";
