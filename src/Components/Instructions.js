@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Modal,Form} from 'react-bootstrap';
 import { For } from 'react-loops';
+import './CodeQues.css'
 
 function Instructions(props) {
     var instructions = props.instructions;
