@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Modal,Form} from 'react-bootstrap';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import { For } from 'react-loops';
 import {useDispatch} from 'react-redux';
 import {submit} from '../actions';
@@ -15,7 +21,6 @@ function Instructions(props) {
     }
 
     function onClick() {
-        props.onAcceptedInstructions();
         dispatch(submit())
     }
     
@@ -44,7 +49,9 @@ function Instructions(props) {
                     </Card.Text>
                 </Card.Body> 
                 <Card.Footer>
-                <Button disabled={disabled} onClick={onClick} className="my-btn" variant="success btn-right">Submit</Button>
+                    <Link to = "/quiz/Questions"> 
+                        <Button to="/quiz/Questions" onClick={onClick} disabled={disabled} className="my-btn" variant="success btn-right">Submit</Button>
+                    </Link> 
                 </Card.Footer>
             </Card>
         </div>

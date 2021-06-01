@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 import Instructions from "./Instructions";
 import Questions from "./Questions";
+import Questionss from "./Questionss";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
 
@@ -14,20 +21,7 @@ function Quiz() {
     const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
-    // const url = getUrl(props.type);
-
-    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
-
-    // function getUrl(type){
-    //     let url = "";
-        
-    //     if( type == 'Fillup'){
-    //         url = 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json';
-    //     }else if( type == "Editor"){
-    //         url = 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json';
-    //     }
-    //     return url;
-    // }
+    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
 
     function acceptedInstructions(){
         setIsInstructions(false);
@@ -44,13 +38,23 @@ function Quiz() {
     }
 
     return (
-        <div>
+            
+        <div className="App">
             {isLoading && <p>Loading...</p>}
-            {!isLoading && isInstructions && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
-            {!isLoading && isQuestions && <Questions questions={data.questions} showResults = {showResult}/>}
-            {!isLoading && isResults && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
+            <Router>
+                <Switch>
+                <Route exact path="/quiz/Instructions">
+                    {!isLoading && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
+                </Route>
+                <Route path="/quiz/Questions">
+                    {!isLoading  && <Questionss questions={data.questions} showResults = {showResult}/>}
+                </Route>
+                <Route path="/quiz/Results">
+                    {!isLoading && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
+                </Route>    
+                </Switch>   
+            </Router>
         </div>
-        
     );
   }
   

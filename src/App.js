@@ -12,7 +12,11 @@ import {
 import Start  from "./Components/Start.js";
 import FillupResults  from "./Components/Results.js";
 import Quiz  from "./Components/Quiz.js";
-// import Programs from './Components/Programs';
+import Instructions from "./Components/Instructions";
+import Questions from "./Components/Questions";
+import Results  from "./Components/Results.js";
+
+
 function App() {
 
   return (
@@ -24,10 +28,7 @@ function App() {
           </Route>
           <Route path="/quiz">
             <Quiz />
-          </Route>
-          {/* <Route path="/programs">
-            <Programs />
-          </Route>   */}
+          </Route> 
         </Switch>   
       </Router>
     </div>
