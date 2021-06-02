@@ -166,7 +166,8 @@ class Questions extends Component{
                             <Card.Body>
                                 <Card.Title></Card.Title>
                                 <Card.Text>
-                                    {/* <h5>{currentQuestion.question}</h5> */}
+                                // This was edited by Pragya
+                                // The question was sent to CodeQues component as prop
                                     <CodeQues 
                                         question = {currentQuestion.question}
                                     />
