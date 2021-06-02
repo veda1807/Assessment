@@ -13,7 +13,6 @@ import {Card,Button,Modal,Form} from 'react-bootstrap';
 
 
 function Start() {
-
     return (
         <div class="flex-parent jc-center">
             <Link to="/quiz">
