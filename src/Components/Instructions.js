@@ -1,3 +1,5 @@
+// Author:Sreevidya
+
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Modal,Form} from 'react-bootstrap';
@@ -7,9 +9,11 @@ function Instructions(props) {
     var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);
 
+//     This method enables the submit button on clicking on check me out.
     function onChange() {
         setDisabled(!disabled);
     }
+    
     return(
         <div className="my-instructions">
             <Card className="my-card">
