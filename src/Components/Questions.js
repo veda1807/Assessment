@@ -48,6 +48,7 @@ class Questions extends Component{
         this.setState({show: true});
     }
 
+//     This method is used to display the question.
     displayQuestion = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
       let { currentQuestionIndex, isFinish } = this.state;
         if( !isEmpty(this.state.questions) ){
@@ -58,13 +59,11 @@ class Questions extends Component{
             currentQuestion = questions[currentQuestionIndex];
             nextQuestion = questions[currentQuestionIndex + 1];
             previousQuestion = questions[currentQuestionIndex - 1];
-            //const answer = currentQuestion.answer;
             this.setState({
                 currentQuestion,
                 nextQuestion,
                 previousQuestion,
                 isFinish
-                //answer
             });
         }
     };
@@ -91,6 +90,7 @@ class Questions extends Component{
         console.log(this.state.totalTimeTaken);
     }
 
+//     This method is used show the timer.
     updateCountdown(){
         let { time } = this.state;
         time++;
@@ -111,6 +111,7 @@ class Questions extends Component{
         });
     }
 
+//     This method is used to display the first qestion and start the timer.
     componentDidMount() {
     
         const {questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
