@@ -1,3 +1,5 @@
+// Author:Sreevidya
+
 import logo from './logo.svg';
 import './App.css';
 // import  './index.css';
@@ -24,9 +26,6 @@ function App() {
           <Route path="/quiz">
             <Quiz />
           </Route>
-          {/* <Route path="/programs">
-            <Programs />
-          </Route>   */}
         </Switch>   
       </Router>
     </div>
