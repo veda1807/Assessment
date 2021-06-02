@@ -1,3 +1,6 @@
+// This file was created by Pragya
+
+// This file sets up the code-editor, output-window and coding question taking question from Questions.js file
 import React, { useState } from "react";
 import Editor from "./Editor.js";
 import "./CodeQues.css"
