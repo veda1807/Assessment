@@ -1,3 +1,6 @@
+// author: Sreevidya
+// Created a button to start the quiz.
+
 import React from "react";
 import {
     BrowserRouter as Router,
@@ -18,13 +21,7 @@ function Start() {
                     Start Quiz
                 </Button>
             </Link>
-            {/* <Link to="/programs">
-                <Button className="my-startbtn" variant="success" to="/programs" > 
-                    Start Coding
-                </Button>
-            </Link> */}
         </div>
-        
     );
   }
   
