@@ -8,14 +8,8 @@ import {
   Route,
   Link
 } from "react-router-dom";
-
 import Start  from "./Components/Start.js";
-import FillupResults  from "./Components/Results.js";
 import Quiz  from "./Components/Quiz.js";
-import Instructions from "./Components/Instructions";
-import Questions from "./Components/Questions";
-import Results  from "./Components/Results.js";
-
 
 function App() {
 

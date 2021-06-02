@@ -7,7 +7,6 @@ import { For } from 'react-loops';
 import NewLine from '../utils/NewLine';
 import FetchData from "../utils/FetchData";
 
-
 function Results(props) {
 
   const [showResults, setShowResults] = useState(false);

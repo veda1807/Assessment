@@ -12,12 +12,12 @@ import Questions from "./Questions";
 
 function Questionss(props) {  
   let { path} = useRouteMatch(); 
-  console.log(path);
+  // console.log(path);
   return (  
     <div>
     <Switch>  
         <Route exact path={path}>  
-          <Redirect to={`${path}/0`} />   
+          <Redirect to={`${path}/1`} />   
         </Route>  
         <Route path={`${path}/:question`}>  
           <Questions path={path} questions={props.questions} showResults={props.showResults}/>  

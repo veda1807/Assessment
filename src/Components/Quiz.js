@@ -6,7 +6,6 @@ import {
     Link
   } from "react-router-dom";
 import Instructions from "./Instructions";
-import Questions from "./Questions";
 import Questionss from "./Questionss";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
