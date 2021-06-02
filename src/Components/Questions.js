@@ -1,3 +1,5 @@
+// Author:Sreevidya
+
 import React, { Component } from "react";
 import {
     BrowserRouter as Router,
@@ -35,11 +37,13 @@ class Questions extends Component{
             text: ''
         };
     }
-
+    
+// This method is used to close the quit modal.
     handleClose(){
         this.setState({show: false});
     }
-
+    
+// This method is used to show the quit modal on clicking on quit button.
     handleShow(){
         this.setState({show: true});
     }
@@ -64,7 +68,8 @@ class Questions extends Component{
             });
         }
     };
-
+    
+//     This method is used to move to next question on clicking on Next button.
     displayNextQuestion = () => {
         let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
         this.setState(prevState => ({
@@ -75,6 +80,7 @@ class Questions extends Component{
         });
     };
 
+//    This method used to show results on clicking the Finish button. 
     onFinish = () => {
         const{ intervalId, totalTimeTaken, timer} = this.state;
         clearInterval(intervalId);
@@ -115,6 +121,7 @@ class Questions extends Component{
         this.setState({intervalId: newintervalId});
     }
 
+//     This method used to store the answer textarea value in to the state.
     onChangeTeaxtarea = (ele) =>{
         this.setState({text:ele.target.value});
     }
@@ -130,11 +137,8 @@ class Questions extends Component{
                     <div  className="sidebar">
                         <div className="details">
                             <Row>
-                                
                                 <Col sm="6"><h5 className="text-center">Answered questions : 0/{this.state.questions.length}</h5></Col>
                                 <Col sm="6"><h3 className="text-center">{this.state.timer}</h3></Col>
-                                
-                                {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
                             </Row>
                         </div>  
                     </div>
@@ -143,8 +147,6 @@ class Questions extends Component{
                             <Card.Header>
                                 <Row>
                                 <Col><h3 className="text-center">Question {this.state.currentQuestionIndex+1}</h3></Col>
-                                {/* <Col sm="6"><label>No of attempts</label>
-                                <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
                                 </Row>
                             </Card.Header>
 
@@ -172,7 +174,6 @@ class Questions extends Component{
                                         question = {currentQuestion.question}
                                     />
                                 </Card.Text>
-
                             </Card.Body> }
 
                             <Card.Footer>
