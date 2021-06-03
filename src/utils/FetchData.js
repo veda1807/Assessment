@@ -38,7 +38,6 @@ function FetchData({ url, initialState = null, skip = false }) {
   };
 
   const showError = err => {
-    // your custom error display logic
     alert(err);
   };
 
