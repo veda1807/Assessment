@@ -1,3 +1,7 @@
+// Author:Sreeevidya
+
+//This component is used to fetch the data from API 
+
 import React, { useEffect, useState } from "react";
 function FetchData({ url, initialState = null, skip = false }) {
     const [data, setData] = useState(initialState);
