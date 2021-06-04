@@ -1,6 +1,6 @@
 // Author:Sreeevidya
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 function FetchData({ url, initialState = null, skip = false }) {
   

@@ -2,7 +2,7 @@
 
 // Created a button to start the quiz.
 
-import React, {useEffect} from "react";
+import React from "react";
 import {
     Link
   } from "react-router-dom";
@@ -34,7 +34,7 @@ function Start() {
     
     
     return (
-        <div class="flex-parent jc-center">
+        <div className="flex-parent jc-center">
             <Link to="/quiz/Instructions">
                 <Button className="my-startbtn margin-right" variant="success" to="/quiz/Instructions"> 
                     Start Quiz

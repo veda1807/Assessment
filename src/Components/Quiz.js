@@ -10,44 +10,32 @@ import Instructions from "./Instructions";
 import Questionss from "./Questionss";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
+import Start  from "./Start.js";
 
 function Quiz() {
-    const [isInstructions, setIsInstructions] = useState(true);
-    const [isQuestions, setIsQuestions] = useState(false);
-    const [isResults, setIsResults] =useState(false);
-    const [questions, setQuestions] = useState([]);
-    const [instructions, setInstructions] = useState([]);
-    const [answers, setAnswer] = useState([]);
     const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
     // Fetched instructions and questions data from JSON file using FetchData component. 
-    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
-
-    // This method is used to show the questions on accepting instructions.
-    function acceptedInstructions(){
-        setIsInstructions(false);
-        setIsQuestions(true);
-        setIsResults(false);
-    }
+    const {data, isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
 
     // This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){
         setTimer(childQuestionsstate.timer);
-        setStudentAnswerList(childQuestionsstate.studentAnswerList)
-        setIsInstructions(false);
-        setIsQuestions(false);
-        setIsResults(true);
+        setStudentAnswerList(childQuestionsstate.studentAnswerList);
     }
 
     return (
             
         <div className="App">
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <div>Loading...</div>}
             <Router>
                 <Switch>
+                <Route exact path="/">
+                   <Start />
+                </Route>
                 <Route exact path="/quiz/Instructions">
-                    {!isLoading && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
+                    {!isLoading && <Instructions instructions={data.instructions} />}
                 </Route>
                 <Route path="/quiz/Questions">
                     {!isLoading  && <Questionss questions={data.questions} showResults = {showResult}/>}

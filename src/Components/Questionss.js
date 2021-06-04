@@ -11,7 +11,6 @@ import {
   useRouteMatch  
 } from "react-router-dom";
 import Questions from "./Questions";
-import Start  from "./Start.js";
 
 function Questionss(props) {  
   let { path} = useRouteMatch(); 

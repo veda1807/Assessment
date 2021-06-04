@@ -120,7 +120,7 @@
 }
 
 .coding-question {
-  height: 480px;
+  max-height: 480px;
   width:100%;
   overflow: auto;
 }

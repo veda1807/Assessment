@@ -15,13 +15,13 @@ function Results(props) {
   const [isFillupExist, setIsFillupExist] = useState(false);
 
   // Fetching the answer data.
-  const {data,isLoading,reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
+  const {data,isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
  
   // This code is used to prepare result data to display in the table.
   if(!isLoading && !showResults){
     let tableData = [];
     for(let i =0; i < props.questions.length; i++){
-      if(props.questions[i].type == "Fillup" ){
+      if(props.questions[i].type === "Fillup" ){
         setIsFillupExist(true);
         let tdData = {
           key: props.questions[i].key,

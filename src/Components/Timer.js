@@ -6,11 +6,11 @@ import React from 'react';
 import { useStopwatch } from 'react-timer-hook';
 
 function Timer(props) {
-    const {seconds, minutes, hours, pause} = useStopwatch({ autoStart: true });
+    const {seconds, minutes, hours} = useStopwatch({ autoStart: true });
 
-    function getTimer(){
-        return [hours, minutes, seconds];
-    }
+    // function getTimer(){
+    //     return [hours, minutes, seconds];
+    // }
     
     return (
         <div>

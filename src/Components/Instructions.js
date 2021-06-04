@@ -25,7 +25,7 @@ function Instructions(props) {
                     <h3>Instructions</h3>
                 </Card.Header>
                 <Card.Body className="my-cardbody-instructions">
-                    <Card.Text className="instructions-text">
+                    <div className="instructions-text">
                         <ul>
                             <li>Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
                             <li>Clicking on next button moves to next question.</li>
@@ -40,7 +40,7 @@ function Instructions(props) {
                                 </Form.Group>
                             </Form>
                         </ul>
-                    </Card.Text>
+                    </div>
                 </Card.Body> 
                 <Card.Footer>
                     <Link to = "/quiz/Questions"> 

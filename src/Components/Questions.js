@@ -34,7 +34,7 @@ function Questions(props) {
     const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
 
     // Checking whether the question number is valid or not
-    const isValidQuestionNumber = question == count;
+    const isValidQuestionNumber = parseInt(question) === count;
 
     // Checking the type of the question
     const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
@@ -54,7 +54,7 @@ function Questions(props) {
     // Getting the data from session.
     function quizData() {
         var sessionData = window.sessionStorage.getItem('quizData');
-        if(sessionData == undefined){
+        if(sessionData === null){
             sessionData =  {
                 count: 1,
                 studentAnswerList: {}
@@ -70,7 +70,6 @@ function Questions(props) {
     }
 
     function recordAnswer() {
-        var studentAnsList = studentAnswerList;
         studentAnswerList[question] = studentResponse; 
         setQuizUserData({
             count: count,
@@ -184,7 +183,7 @@ function Questions(props) {
                                         <Button variant="secondary" onClick={handleClose}>
                                             Close
                                         </Button>
-                                        <Link to="/">
+                                        <Link to="/start">
                                             <Button variant="danger" >Quit</Button>
                                         </Link>
                                     </Modal.Footer>
