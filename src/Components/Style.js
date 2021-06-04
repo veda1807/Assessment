@@ -5,7 +5,7 @@ export const myTheme = EditorView.theme({
     "&": {
       color: "white",
       backgroundColor: "#111",
-      height: "200px",
+      height: "320px",
       width: "100%",
       fontSize: "large"
     },

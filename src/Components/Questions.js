@@ -85,39 +85,32 @@ function Questions(props) {
     }
 
     return (
-        <div>  
-            <div className="my-questionpg">
-                <div  className="sidebar">
-                    <div className="details">
-                        <Row>
-                            
-                            <Col sm="6"><h5 className="text-center">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
-                            <Col sm="6"><h3 className="timer text-center"><Timer /></h3></Col>
-                            
-                            {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
-                        </Row>
-                    </div>  
-                </div>
-                <div>
-                    <Card className="my-card">
-                        <Card.Header>
-                            <Row>
-                            <Col><h3 className="text-center">Question {parseInt(question) + 1}</h3></Col>
-                            {/* <Col sm="6"><label>No of attempts</label>
-                            <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
-                            </Row>
-                        </Card.Header>
+        <div>
+            <div className = "my-questionpg">
+                <div className = "sidebar">
+                    <div className = "details">
+                        <Card className = "my-card">
+                            <Card.Header className = "my-card-header">
+                                <Row>                          
+                                    <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
+                                    <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question) + 1}</h4></Col>
+                                    <Col sm="4"><h5 className="timer text-right align-middle"><Timer /></h5></Col>
+                                </Row>
+                            </Card.Header>
 
-                        {/* For fillup type quetions */}
-                        {type === "Fillup" &&
-                        <Card.Body className="my-cardbody-fillups">
-                            <Card.Text><div className="question"><NewLine className="box" text={questions[question].question} /></div></Card.Text>
-                            <Card.Text className="fillups-text">
-                                <Form.Group controlId="exampleForm.ControlTextarea1" > 
-                                    <h5>Answer</h5>
+                        {/* For fillup type questions */}
+                            {type === "Fillup" && <Card.Body className="my-cardbody-fillups">
+                                <Card.Text>
+                                    <div className="question">
+                                        <NewLine className="box" text={questions[question].question} />
+                                    </div>
+                                </Card.Text>
+                                <Card.Text className="fillups-text">
+                                    <Form.Group controlId="exampleForm.ControlTextarea1" > 
+                                        <h5> Answer </h5>
                                     <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
                                 </Form.Group>
-                                <h6>{displayResponse}</h6>
+                                <h6> {displayResponse} </h6>
                                 <Button variant="success" onClick={recordAnswer}>Submit</Button> 
                             </Card.Text>
                         </Card.Body> }
@@ -125,49 +118,49 @@ function Questions(props) {
                         {/* For editor type questions */}
                         {type === "Editor" &&
                         <Card.Body>
-                            {/* <h5>{currentQuestion.question}</h5> */}
                             <CodeQues 
                                 question = {questions[question].question}
                             />
                         </Card.Body> }
 
-                        <Card.Footer>
-                        <Link to={`${path}/${parseInt(question) + 1}`} >
-                            {!displayFinish && <Button variant="primary"className="my-btn" onClick={onNext}>Next</Button>}
-                        </Link>
-                            <Link to="/quiz/Results" >
-                            {displayFinish && <Button to="/quiz/Results" variant="primary" className="my-btn" onClick={onFinish}>Finish</Button>}
-                            </Link>
-                            <Button variant="danger" className="my-btn" onClick={handleShow}>Quit</Button>
-                            {/* Show Modal */}
-                            <Modal
-                                show={showQuitWarning}
-                                onHide={handleClose}
-                                backdrop="static"
-                                keyboard={false}
-                            >
-                                <Modal.Header closeButton>
-                                <Modal.Title className="text-center">Quit</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                Are you stuck in answering the questions? Quit and go back to learn.
-                                </Modal.Body>
-                                <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
-                                    Close
-                                </Button>
-                                <Link to="/">
-                                    <Button variant="danger" >Quit</Button>
+                            <Card.Footer className = "my-card-footer">
+                                <Link to={`${path}/${parseInt(question) + 1}`} >
+                                    {!displayFinish && <Button variant="primary" className="my-btn" onClick={onNext}>Next</Button>}
                                 </Link>
-                                </Modal.Footer>
-                            </Modal>
-                            {/* Modal closed */}
-                        </Card.Footer>
-                    </Card>
+                                <Link to="/quiz/Results" >
+                                    {displayFinish && <Button to="/quiz/Results" variant="primary" className="my-btn" onClick={onFinish}>Finish</Button>}
+                                </Link>
+                                <Button variant="danger" className="my-btn" onClick={handleShow}>Quit</Button>
+                                {/* Show Modal */}
+                                <Modal
+                                    show={showQuitWarning}
+                                    onHide={handleClose}
+                                    backdrop="static"
+                                    keyboard={false}
+                                >
+                                    <Modal.Header closeButton>
+                                        <Modal.Title className="text-center">Quit</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        Are you stuck in answering the questions? Quit and go back to learn.
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleClose}>
+                                            Close
+                                        </Button>
+                                        <Link to="/">
+                                            <Button variant="danger" >Quit</Button>
+                                        </Link>
+                                    </Modal.Footer>
+                                </Modal>
+                                {/* Modal closed */}
+                            </Card.Footer>
+                        </Card>
+                    </div>
                 </div>
             </div>
         </div>
-    );
-  }
+    )
+}
   
-  export default Questions;
+export default Questions;
