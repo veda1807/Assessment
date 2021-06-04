@@ -135,19 +135,17 @@ function Questions(props) {
                         {/* For fillup type questions */}
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
-                                <Card.Text>
-                                    <div className="question">
-                                        <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
-                                    </div>
-                                </Card.Text>
-                                <Card.Text className="fillups-text">
+                                <div className="question">
+                                    <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
+                                </div>
+                                <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
                                         <h5> Answer </h5>
                                         <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
                                     </Form.Group>                               
                                     <Button variant="success" onClick={recordAnswer}>Submit</Button> 
                                     <span><b>{displayResponse}</b></span>
-                                </Card.Text>
+                                </div>
                              </Card.Body> }
 
                         {/* For editor type questions */}
