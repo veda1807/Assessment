@@ -1,3 +1,7 @@
+// Author:Sreeevidya
+
+// This component is used as a timer (Stopwatch)
+
 import React from 'react';
 import { useStopwatch } from 'react-timer-hook';
 

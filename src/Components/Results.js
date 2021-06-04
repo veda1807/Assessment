@@ -1,3 +1,4 @@
+// Author:Sreeevidya
 
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,9 +13,12 @@ function Results(props) {
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
+
+  // Fetching the answer data.
   const {data,isLoading,reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
  
-  if(!isLoading && !showResults){//
+  // This code is used to prepare result data to display in the table.
+  if(!isLoading && !showResults){
     let tableData = [];
     for(let i =0; i < props.questions.length; i++){
       if(props.questions[i].type == "Fillup" ){
@@ -29,7 +33,7 @@ function Results(props) {
     }
     setTableData(tableData);
     setShowResults(true);
-  }// 
+  }
 
 
   return (

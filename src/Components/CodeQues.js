@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Editor from "./Editor.js";
 import "./CodeQues.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {ButtonGroup, ToggleButton, Row, Col, Nav} from 'react-bootstrap';
+import {Row, Col, Nav} from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 
 export default function CodeQues(props) {
@@ -11,8 +11,8 @@ export default function CodeQues(props) {
     const [result, setResult] = useState("");
     const [showQuestion, setShowQuestion] = useState(true);
     const [showOutputBox, setShowOutputBox] = useState(false);
-    const [isQuestion, setIsQuestion] = useState(true);
-    const [isEditor, setIsEditor] = useState(false);
+    // const [isQuestion, setIsQuestion] = useState(true);
+    // const [isEditor, setIsEditor] = useState(false);
 
     const enableQuestion = () =>{
         setShowQuestion(true);

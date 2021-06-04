@@ -1,14 +1,38 @@
-import React from "react";
+// Author:Sreeevidya
+
+// Created a button to start the quiz.
+
+import React, {useEffect} from "react";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Modal,Form} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 function Start() {
+
+    // useEffect(){
+    // window.location.reload(false);
+    // }
+
+    // useEffect(()=> {
+    //     window.location.reload(false);
+    // },[]);
+    
+    // useEffect(() => {
+    //     if(reloadCount < 2) {
+    //       sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+    //       window.location.reload();
+    //     } else {
+    //       sessionStorage.removeItem('reloadCount');
+    //     }
+    //   }, []);
+
+    // useEffect(() => {
+    //     window.location.reload();
+    //   }, []);
+    
+    
     return (
         <div class="flex-parent jc-center">
             <Link to="/quiz/Instructions">

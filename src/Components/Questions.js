@@ -1,101 +1,122 @@
+// Author:Sreeevidya
+
 import React, { useEffect, useState } from "react";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    useRouteMatch,
     useParams,
     Redirect,
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,InputGroup,Form, Modal  } from 'react-bootstrap';
-import isEmpty from '../utils/is-empty';
+import {Card,Button,Row,Col,Form, Modal  } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
-import {useDispatch} from 'react-redux';
-import {next,results} from '../actions';
-import { useStopwatch } from 'react-timer-hook';
 import Timer from './Timer';
-            
 
 function Questions(props) {
+
     //search params
     var { question } = useParams();
-    const effectiveQuestionNumber = question-1;
-    // question = question-1;
+    const effectiveQuestionNumber = parseInt(question) - 1;
+
+    // Getting session data
+    const sesssionDetails = quizData();
+    const [quizUserData, setQuizUserData] = useState(sesssionDetails);
+    const studentAnsSessionList = ( sesssionDetails &&  sesssionDetails.studentAnswerList ) || {};
+    const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
+        sesssionDetails.studentAnswerList[question]) || "";
+    const count = quizUserData['count'];
+
+    // url path
     const path = props.path; 
     const questions = props.questions;
-    // const [question, setCurrentQuestionIndex ] = useState(question);
-    const [answeredQuestions, setAnsweredQuestions] = useState(0);
-    const [showQuitWarning, setShowQuitWarning] = useState(false);
-    const [studentResponse, setStudentResponse] = useState('');
-    const [studentAnswerList, setStudentAnswerList] = useState([]);
-    const [displayResponse, setDisplayResponse] = useState('');
-    //const {seconds, minutes, hours, pause} = useStopwatch({ autoStart: true });
-    const [displayFinish, setDisplayFinish] = useState(questions.length <= 1 ? true : false);
 
-    const initialCount = () => Number(window.sessionStorage.getItem('count') || 1);
-    const[count, setCount] = useState(initialCount)
+    // Checking for finish button visibility
+    const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
+
+    // Checking whether the question number is valid or not
     const isValidQuestionNumber = question == count;
 
+    // Checking the type of the question
     const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
 
-    const dispatch = useDispatch();
+    // State variables
+    const [showQuitWarning, setShowQuitWarning] = useState(false);
+    const [studentResponse, setStudentResponse] = useState(studentResponceIfExist);
+    const [displayResponse, setDisplayResponse] = useState('');
+    const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
+    const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
 
     useEffect(() => {
-        window.sessionStorage.setItem('count',count)
-      }, [count],
-      )
-    
+            window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
+        }, [quizUserData]
+    );
 
+    // Getting the data from session.
+    function quizData() {
+        var sessionData = window.sessionStorage.getItem('quizData');
+        if(sessionData == undefined){
+            sessionData =  {
+                count: 1,
+                studentAnswerList: {}
+            }
+        }else{
+            sessionData = JSON.parse(sessionData);
+        }
+        return sessionData;
+    }
+    
     function studentInput(e){
         setStudentResponse(e.target.value);
     }
 
-    function recordAnswer(e) {
-        setStudentAnswerList([...studentAnswerList, studentResponse]);
+    function recordAnswer() {
+        var studentAnsList = studentAnswerList;
+        studentAnswerList[question] = studentResponse; 
+        // setStudentAnswerList(question,studentResponse);
+        setQuizUserData({
+            count: count,
+            // result:result,
+            studentAnswerList: studentAnswerList
+        });
+        setStudentAnswerList(studentAnswerList);
+        setTimeout(() => {
+            setDisplayResponse('')
+          }, 3000);
         setDisplayResponse('Your response is recorded');
-        setAnsweredQuestions(answeredQuestions + 1);
+        setAnsweredQuestions(Object.keys(studentAnswerList).length);
     }
 
+    // This method is used to move to next question on clicking on Next button.
     function onNext() {
         setStudentResponse('');
         setDisplayResponse('');
-        if( effectiveQuestionNumber < questions.length - 2 ){
-            //setCurrentQuestionIndex( question + 1 );
-        }else{
-            setDisplayFinish(true);
-        }
-        dispatch(next());
-        setCount(count+1)
+        setQuizUserData({
+            count: count+1,
+            studentAnswerList: studentAnswerList
+        });
     }
 
-    function handleClose() {
-        setShowQuitWarning(false);
-    }
-
-    function handleShow() {
-        setShowQuitWarning(true);
-    }
-
+    // This method used to show results on clicking the Finish button. 
     function onFinish() {
+
         let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
-        console.log(timeString);
+        // console.log(timeString);
         let params = {
             questions: questions,
             timer:[parseInt(timeString[0]), parseInt(timeString[1]), parseInt(timeString[2])],
             studentAnswerList: studentAnswerList
         }
-        //to pause the timer
-        // pause();
         props.showResults(params);
-        dispatch(results());
-        setCount(count+1)
     }
 
-    function componentDidMount(){
-        console.log("Inside cdm");
+    // This method is used to close the quit modal.
+    function handleClose() {
+        setShowQuitWarning(false);
+    }
+
+    // This method is used to show the quit modal on clicking on quit button.
+    function handleShow() {
+        setShowQuitWarning(true);
     }
 
     return (
@@ -106,11 +127,8 @@ function Questions(props) {
                 <div  className="sidebar">
                     <div className="details">
                         <Row>
-                            
                             <Col sm="6"><h5 className="text-center">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                             <Col sm="6"><h3 className="timer text-center"><Timer /></h3></Col>
-                            
-                            {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
                         </Row>
                     </div>  
                 </div>
@@ -119,8 +137,6 @@ function Questions(props) {
                         <Card.Header>
                             <Row>
                             <Col><h3 className="text-center">Question {parseInt(question)}</h3></Col>
-                            {/* <Col sm="6"><label>No of attempts</label>
-                            <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
                             </Row>
                         </Card.Header>
 
@@ -133,15 +149,14 @@ function Questions(props) {
                                     <h5>Answer</h5>
                                     <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
                                 </Form.Group>
-                                <h6>{displayResponse}</h6>
                                 <Button variant="success" onClick={recordAnswer}>Submit</Button> 
+                                <span><b>{displayResponse}</b></span>
                             </Card.Text>
                         </Card.Body> }
 
                         {/* For editor type questions */}
                         {type === "Editor" &&
                         <Card.Body>
-                            {/* <h5>{currentQuestion.question}</h5> */}
                             <CodeQues 
                                 question = {questions[effectiveQuestionNumber].question}
                             />
