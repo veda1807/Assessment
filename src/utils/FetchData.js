@@ -1,5 +1,9 @@
+// Author:Sreeevidya
+
 import React, { useEffect, useState } from "react";
+
 function FetchData({ url, initialState = null, skip = false }) {
+  
     const [data, setData] = useState(initialState);
     const [isLoading, setIsLoading] = useState(true);
     const [reload, setReload] = useState({}); // used to force running the api fetch in effect

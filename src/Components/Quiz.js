@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+// Author:Sreeevidya
+
+import React, {useState } from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route,
-    Link
+    Route
   } from "react-router-dom";
 import Instructions from "./Instructions";
-import Questions from "./Questions";
 import Questionss from "./Questionss";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
@@ -21,14 +21,17 @@ function Quiz() {
     const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
+    // Fetched instructions and questions data from JSON file using FetchData component. 
     const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
 
+    // This method is used to show the questions on accepting instructions.
     function acceptedInstructions(){
         setIsInstructions(false);
         setIsQuestions(true);
         setIsResults(false);
     }
 
+    // This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){
         setTimer(childQuestionsstate.timer);
         setStudentAnswerList(childQuestionsstate.studentAnswerList)

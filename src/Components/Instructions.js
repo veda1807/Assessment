@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from "react";
+// Author:Sreeevidya
+
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Modal,Form} from 'react-bootstrap';
+import {Card,Button,Form} from 'react-bootstrap';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
     Link
   } from "react-router-dom";
 import { For } from 'react-loops';
-import {useDispatch} from 'react-redux';
-import {submit} from '../actions';
+
 
 function Instructions(props) {
     var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);
-    const dispatch = useDispatch();
 
+    // This method enables the submit button on clicking on check me out.
     function onChange() {
         setDisabled(!disabled);
     }
 
-    function onClick() {
-        dispatch(submit())
-    }
-    
     return(
         <div className="my-instructions">
             <Card className="my-card">
@@ -50,7 +44,7 @@ function Instructions(props) {
                 </Card.Body> 
                 <Card.Footer>
                     <Link to = "/quiz/Questions"> 
-                        <Button to="/quiz/Questions" onClick={onClick} disabled={disabled} className="my-btn" variant="success btn-right">Submit</Button>
+                        <Button to="/quiz/Questions" disabled={disabled} className="my-btn" variant="success btn-right">Submit</Button>
                     </Link> 
                 </Card.Footer>
             </Card>

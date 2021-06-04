@@ -1,23 +1,26 @@
+// Author:Sreeevidya
+
+// This component is used to create nested route for every question.
+// Sends question as a param to the question component.
+
 import React from "react";    
-import {  
-  BrowserRouter as Router,  
+import {    
   Switch,  
-  Route,  
-  Link,  
-  useParams,  
+  Route,    
   Redirect,
   useRouteMatch  
 } from "react-router-dom";
 import Questions from "./Questions";
+import Start  from "./Start.js";
 
 function Questionss(props) {  
   let { path} = useRouteMatch(); 
-  console.log(path);
+
   return (  
     <div>
     <Switch>  
         <Route exact path={path}>  
-          <Redirect to={`${path}/0`} />   
+          <Redirect to={`${path}/1`} />   
         </Route>  
         <Route path={`${path}/:question`}>  
           <Questions path={path} questions={props.questions} showResults={props.showResults}/>  

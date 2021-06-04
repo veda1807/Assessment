@@ -7,6 +7,7 @@ import { python } from '@codemirror/lang-python';
 import "./CodeQues.css";
 
 export default function Editor(props) {
+    
     const {
         setView,
         language,

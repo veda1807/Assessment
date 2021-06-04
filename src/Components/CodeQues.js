@@ -9,21 +9,7 @@ export default function CodeQues(props) {
 
     const [view, setView] = useState(null);
     const [result, setResult] = useState("");
-    const [showQuestion, setShowQuestion] = useState(true);
-    const [showOutputBox, setShowOutputBox] = useState(false);
-    const [isQuestion, setIsQuestion] = useState(true);
-    const [isEditor, setIsEditor] = useState(false);
     const [open, setOpen] = useState(false);
-
-    const enableQuestion = () =>{
-        setShowQuestion(true);
-        setShowOutputBox(false);
-    }
-
-    const enableOutputBox = () =>{
-        setShowQuestion(false);
-        setShowOutputBox(true);
-    }
 
     const runCode = () => {
         if (view === null) return;
