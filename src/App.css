@@ -137,3 +137,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.answer_status {
+  margin-left: 3%;
+}

@@ -4,6 +4,7 @@ import React, {useState } from "react";
 import {
     BrowserRouter as Router,
     Switch,
+    useRouteMatch,
     Route
   } from "react-router-dom";
 import Instructions from "./Instructions";
@@ -13,6 +14,7 @@ import FetchData from "../utils/FetchData"
 import Start  from "./Start.js";
 
 function Quiz() {
+    let { path } = useRouteMatch();
     const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
@@ -31,16 +33,16 @@ function Quiz() {
             {isLoading && <div>Loading...</div>}
             <Router>
                 <Switch>
-                <Route exact path="/start">
+                <Route exact path="/">
                    <Start />
                 </Route>
-                <Route exact path="/quiz/Instructions">
+                <Route  path={`${path}/Instructions`}>
                     {!isLoading && <Instructions instructions={data.instructions} />}
                 </Route>
-                <Route path="/quiz/Questions">
+                <Route path={`${path}/Questions`}>
                     {!isLoading  && <Questionss questions={data.questions} showResults = {showResult}/>}
                 </Route>
-                <Route path="/quiz/Results">
+                <Route path={`${path}/Results`}>
                     {!isLoading && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
                 </Route>    
                 </Switch>   

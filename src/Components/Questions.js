@@ -144,7 +144,7 @@ function Questions(props) {
                                         <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
                                     </Form.Group>                               
                                     <Button variant="success" onClick={recordAnswer}>Submit</Button> 
-                                    <span><b>{displayResponse}</b></span>
+                                    <span className="answer_status"><b>{displayResponse}</b></span>
                                 </div>
                              </Card.Body> }
 
@@ -181,7 +181,7 @@ function Questions(props) {
                                         <Button variant="secondary" onClick={handleClose}>
                                             Close
                                         </Button>
-                                        <Link to="/start">
+                                        <Link to="/">
                                             <Button variant="danger" >Quit</Button>
                                         </Link>
                                     </Modal.Footer>
