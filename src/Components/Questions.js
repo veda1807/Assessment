@@ -24,7 +24,6 @@ class Questions extends Component{
             previousQuestion: [],
             answer: [],
             numberOfQuestions: 0,
-            numberOfAnsweredQuestions: 0,
             currentQuestionIndex: 0,
             score: 0,
             correctAnswers: 0,
@@ -34,11 +33,28 @@ class Questions extends Component{
             isFinish: false,
             intervalId: undefined,
             totalTimeTaken: '',
-            text: ''
+            text: '',
+            studentAnswerList: [], 
+            studentResponse: '', 
+            // displayResponse: '',
+            answeredQuestions: 0
         };
     }
-    
+   
 // This method is used to close the quit modal.
+    studentInput = (e) =>{
+        this.setState({
+            studentResponse: e.target.value 
+        });
+    }
+    recordAnswer = (e) =>{
+        this.setState({
+            studentAnswerList: [...this.state.studentAnswerList, this.state.studentResponse],
+            // studentResponse: '',
+            displayResponse: 'Your response is recorded',
+            answeredQuestions: this.state.answeredQuestions + 1
+        });
+    }
     handleClose(){
         this.setState({show: false});
     }
@@ -73,7 +89,8 @@ class Questions extends Component{
         let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
         this.setState(prevState => ({
             currentQuestionIndex: prevState.currentQuestionIndex + 1,
-            text: ''
+            // text: ''
+            studentResponse: ''
         }), () => {
             this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
         });
@@ -137,8 +154,8 @@ class Questions extends Component{
                 <div className="my-questionpg">
                     <div  className="sidebar">
                         <div className="details">
-                            <Row>
-                                <Col sm="6"><h5 className="text-center">Answered questions : 0/{this.state.questions.length}</h5></Col>
+                            <Row>                                
+                                <Col sm="6"><h5 className="text-center">Answered questions : {this.state.answeredQuestions}/{this.state.questions.length}</h5></Col>
                                 <Col sm="6"><h3 className="text-center">{this.state.timer}</h3></Col>
                             </Row>
                         </div>  
@@ -154,13 +171,14 @@ class Questions extends Component{
                             {/* For fillup type quetions */}
                             {questionType === "Fillup" &&
                             <Card.Body className="my-cardbody-fillups">
-                                <Card.Text><div><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
+                                <Card.Text><div className="question"><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
                                 <Card.Text className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
                                         <h5>Answer</h5>
-                                        <Form.Control as="textarea" value={this.state.text} rows={3} onChange={this.onChangeTeaxtarea} className="my-input"/>
+                                        <Form.Control as="textarea" value={this.state.studentResponse}  rows={3} onChange={this.studentInput} className="my-input"/>
                                     </Form.Group>
-                                    <Button variant="success">Submit</Button> 
+                                    <h6>{this.state.displayResponse}</h6>
+                                    <Button variant="success" onClick={this.recordAnswer}>Submit</Button> 
                                 </Card.Text>
                             </Card.Body> }
 
@@ -175,10 +193,11 @@ class Questions extends Component{
                                         question = {currentQuestion.question}
                                     />
                                 </Card.Text>
+
                             </Card.Body> }
 
                             <Card.Footer>
-                                {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion} >Next</Button>}
+                                {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion}>Next</Button>}
                                 {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish} >Finish</Button>}
                                 <Button variant="danger" className="my-btn"  onClick={this.handleShow.bind(this)}>Quit</Button>
                                 {/* Show Modal */}

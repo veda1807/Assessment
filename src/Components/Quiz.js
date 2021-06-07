@@ -16,6 +16,8 @@ function Quiz() {
     const [timeTaken, setTimeTaken] = useState("00:00:00");
     
 //    Fetched instructions and questions data from JSON file using FetchData component. 
+
+    const [studentAnswerList, setStudentAnswerList] = useState([])
     const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
 
 //     This method is used to show the questions on accepting instructions.
@@ -28,6 +30,7 @@ function Quiz() {
 //     This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){
         setTimeTaken(childQuestionsstate.timer);
+        setStudentAnswerList(childQuestionsstate.studentAnswerList)
         setIsInstructions(false);
         setIsQuestions(false);
         setIsResults(true);
@@ -38,7 +41,7 @@ function Quiz() {
             {isLoading && <p>Loading...</p>}
             {!isLoading && isInstructions && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
             {!isLoading && isQuestions && <Questions questions={data.questions} showResults = {showResult}/>}
-            {!isLoading && isResults && <Results questions={data.questions} type={data.questions[0].type} timeTaken={timeTaken}/>}
+            {!isLoading && isResults && <Results questions={data.questions}  timeTaken={timeTaken} studentAnswerList={studentAnswerList}/>}
         </div>
     );
   }

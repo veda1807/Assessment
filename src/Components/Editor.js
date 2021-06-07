@@ -7,6 +7,7 @@ import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { java } from '@codemirror/lang-java';
 import {myTheme, myHighlightStyle } from './Style';
 import { python } from '@codemirror/lang-python';
+import "./CodeQues.css";
 
 export default function Editor(props) {
     const {
@@ -50,6 +51,6 @@ export default function Editor(props) {
     }, [language, content, setView])
 
     return (
-        <div ref = {editor}></div>
+        <div className="editor-box" ref = {editor}></div>
     )
 }
