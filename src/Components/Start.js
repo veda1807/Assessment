@@ -1,3 +1,6 @@
+// author: Sreevidya
+// Created a button to start the quiz.
+
 import React from "react";
 import {
     BrowserRouter as Router,
@@ -10,7 +13,6 @@ import {Card,Button,Modal,Form} from 'react-bootstrap';
 
 
 function Start() {
-
     return (
         <div class="flex-parent jc-center">
             <Link to="/quiz">
@@ -18,13 +20,7 @@ function Start() {
                     Start Quiz
                 </Button>
             </Link>
-            {/* <Link to="/programs">
-                <Button className="my-startbtn" variant="success" to="/programs" > 
-                    Start Coding
-                </Button>
-            </Link> */}
         </div>
-        
     );
   }
   

@@ -1,3 +1,5 @@
+// Author:Sreevidya
+
 import React, { Component } from "react";
 import {
     BrowserRouter as Router,
@@ -38,7 +40,8 @@ class Questions extends Component{
             answeredQuestions: 0
         };
     }
-
+   
+// This method is used to close the quit modal.
     studentInput = (e) =>{
         this.setState({
             studentResponse: e.target.value 
@@ -52,15 +55,16 @@ class Questions extends Component{
             answeredQuestions: this.state.answeredQuestions + 1
         });
     }
-
     handleClose(){
         this.setState({show: false});
     }
-
+    
+// This method is used to show the quit modal on clicking on quit button.
     handleShow(){
         this.setState({show: true});
     }
 
+//     This method is used to display the question.
     displayQuestion = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
       let { currentQuestionIndex, isFinish } = this.state;
         if( !isEmpty(this.state.questions) ){
@@ -71,17 +75,16 @@ class Questions extends Component{
             currentQuestion = questions[currentQuestionIndex];
             nextQuestion = questions[currentQuestionIndex + 1];
             previousQuestion = questions[currentQuestionIndex - 1];
-            //const answer = currentQuestion.answer;
             this.setState({
                 currentQuestion,
                 nextQuestion,
                 previousQuestion,
                 isFinish
-                //answer
             });
         }
     };
-
+    
+//     This method is used to move to next question on clicking on Next button.
     displayNextQuestion = () => {
         let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
         this.setState(prevState => ({
@@ -93,6 +96,7 @@ class Questions extends Component{
         });
     };
 
+//    This method used to show results on clicking the Finish button. 
     onFinish = () => {
         const{ intervalId, totalTimeTaken, timer} = this.state;
         clearInterval(intervalId);
@@ -103,6 +107,7 @@ class Questions extends Component{
         console.log(this.state.totalTimeTaken);
     }
 
+//     This method is used show the timer.
     updateCountdown(){
         let { time } = this.state;
         time++;
@@ -123,6 +128,7 @@ class Questions extends Component{
         });
     }
 
+//     This method is used to display the first qestion and start the timer.
     componentDidMount() {
     
         const {questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
@@ -133,6 +139,7 @@ class Questions extends Component{
         this.setState({intervalId: newintervalId});
     }
 
+//     This method used to store the answer textarea value in to the state.
     onChangeTeaxtarea = (ele) =>{
         this.setState({text:ele.target.value});
     }
@@ -147,12 +154,9 @@ class Questions extends Component{
                 <div className="my-questionpg">
                     <div  className="sidebar">
                         <div className="details">
-                            <Row>
-                                
+                            <Row>                                
                                 <Col sm="6"><h5 className="text-center">Answered questions : {this.state.answeredQuestions}/{this.state.questions.length}</h5></Col>
                                 <Col sm="6"><h3 className="text-center">{this.state.timer}</h3></Col>
-                                
-                                {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
                             </Row>
                         </div>  
                     </div>
@@ -161,8 +165,6 @@ class Questions extends Component{
                             <Card.Header>
                                 <Row>
                                 <Col><h3 className="text-center">Question {this.state.currentQuestionIndex+1}</h3></Col>
-                                {/* <Col sm="6"><label>No of attempts</label>
-                                <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
                                 </Row>
                             </Card.Header>
 
@@ -183,10 +185,15 @@ class Questions extends Component{
                             {/* For editor type questions */}
                             {questionType === "Editor" &&
                             <Card.Body>
-                                {/* <h5>{currentQuestion.question}</h5> */}
-                                <CodeQues 
-                                    question = {currentQuestion.question}
-                                />
+                                <Card.Title></Card.Title>
+                                <Card.Text>
+                                // This was edited by Pragya
+                                // The question was sent to CodeQues component as prop
+                                    <CodeQues 
+                                        question = {currentQuestion.question}
+                                    />
+                                </Card.Text>
+
                             </Card.Body> }
 
                             <Card.Footer>
@@ -225,4 +232,3 @@ class Questions extends Component{
   }
   
   export default Questions;
-

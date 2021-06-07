@@ -1,6 +1,12 @@
+// This file was created Pragya
+
+// This file defined the looks of the editor
+
 import {EditorView} from "@codemirror/view"
 import {tags, HighlightStyle} from "@codemirror/highlight"
 
+
+// This part of the code sets the theme for the editor
 export const myTheme = EditorView.theme({
     "&": {
       color: "white",
@@ -30,6 +36,7 @@ export const myTheme = EditorView.theme({
     },
   }, {dark: true})
 
+// This part of the code sets the highlighting the syntax according to the programming language
 export const myHighlightStyle = HighlightStyle.define([
     {
       tag: tags.keyword, 

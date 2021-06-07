@@ -1,3 +1,7 @@
+// Author:Sreevidya
+
+// This component is used to fetch the details from API.
+
 import React, { useEffect, useState } from "react";
 function Fetch({ url, initialState = null, skip = false }) {
     const [cdata, setData] = useState(initialState);

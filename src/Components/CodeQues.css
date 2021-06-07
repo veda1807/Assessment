@@ -1,3 +1,7 @@
+/* This file was created by Pragya */
+
+/* This file defines the style for coding questions */
+
 .coding-assessment {
     display: flex;
     flex-direction: row;
@@ -42,7 +46,6 @@
 .reset {
     float: right;
 }
-
 
 
 .output-window {
