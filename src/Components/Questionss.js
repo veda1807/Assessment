@@ -22,7 +22,7 @@ function Questionss(props) {
           <Redirect to={`${path}/1`} />   
         </Route>  
         <Route path={`${path}/:question`}>  
-          <Questions path={path} questions={props.questions} showResults={props.showResults}/>  
+          <Questions path={path} questions={props.questions} showResults={props.showResults} config = {props.config} />  
         </Route>  
     </Switch>  
     </div>  
