@@ -19,7 +19,7 @@ function Quiz() {
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
     // Fetched instructions and questions data from JSON file using FetchData component. 
-    const {data, isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
+    const {data, isLoading} = FetchData({url: 'http://localhost:4000/assessment'});
 
     // This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){

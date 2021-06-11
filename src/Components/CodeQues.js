@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import Editor from "./Editor.js";
 import "./../App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'react-bootstrap';
+import { Button, Nav } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 
 export default function CodeQues(props) {
