@@ -25,6 +25,8 @@ function Questions(props) {
     const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
         sesssionDetails.studentAnswerList[question]) || "";
     const count = quizUserData['count'];
+    const showInstructions = quizUserData['instructions'];
+    const showResult = quizUserData['result'];
 
     // url path
     const path = props.path; 
@@ -57,7 +59,9 @@ function Questions(props) {
         if(sessionData === null){
             sessionData =  {
                 count: 1,
-                studentAnswerList: {}
+                studentAnswerList: {},
+                result: false,
+                instructions : false
             }
         }else{
             sessionData = JSON.parse(sessionData);
@@ -73,7 +77,9 @@ function Questions(props) {
         studentAnswerList[question] = studentResponse; 
         setQuizUserData({
             count: count,
-            studentAnswerList: studentAnswerList
+            studentAnswerList: studentAnswerList,
+            result: false,
+            instructions : false
         });
         setStudentAnswerList(studentAnswerList);
         setTimeout(() => {
@@ -89,13 +95,14 @@ function Questions(props) {
         setDisplayResponse('');
         setQuizUserData({
             count: count+1,
-            studentAnswerList: studentAnswerList
+            studentAnswerList: studentAnswerList,
+            result: false,
+            instructions : false
         });
     }
 
     // This method used to show results on clicking the Finish button. 
     function onFinish() {
-
         let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
         // console.log(timeString);
         let params = {
@@ -120,6 +127,8 @@ function Questions(props) {
         <div>
             { !isValidQuestionNumber &&
                 <Redirect to={`${path}/${count}`} /> }
+            { showResult && 
+                <Redirect to='/quiz/Results' />}
             <div className = "my-questionpg">
                 <div className = "sidebar">
                     <div className = "details">
