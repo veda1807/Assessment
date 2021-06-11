@@ -1,3 +1,7 @@
+// Author : Pragya
+
+// This file contains styling of the code editor
+
 import {EditorView} from "@codemirror/view"
 import {tags, HighlightStyle} from "@codemirror/highlight"
 

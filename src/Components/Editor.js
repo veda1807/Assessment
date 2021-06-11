@@ -1,6 +1,9 @@
+// Author : Pragya
+
+// This file creates a code editor using codemirror 6
+
 import React, { useEffect, useRef } from 'react'
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
-// import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import {myTheme, myHighlightStyle } from './Style';
 import { python } from '@codemirror/lang-python';

@@ -1,3 +1,7 @@
+// Author : Pragya
+
+// This file contains the design and functionality of the coding questions
+
 import React, { useState } from "react";
 import Editor from "./Editor.js";
 import "./../App.css";
