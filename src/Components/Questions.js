@@ -29,6 +29,7 @@ function Questions(props) {
     // url path
     const path = props.path; 
     const questions = props.questions;
+    const backnav = props.config["backnav"];
 
     // Checking for finish button visibility
     const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
@@ -89,6 +90,16 @@ function Questions(props) {
         setDisplayResponse('');
         setQuizUserData({
             count: count+1,
+            studentAnswerList: studentAnswerList
+        });
+    }
+
+    // This method is used to move to previous question on clicking on Previous button. -> Written by Pragya
+    function onPrevious() {
+        setStudentResponse('');
+        setDisplayResponse('');
+        setQuizUserData({
+            count: count-1,
             studentAnswerList: studentAnswerList
         });
     }
@@ -158,6 +169,12 @@ function Questions(props) {
                         </Card.Body> }
 
                             <Card.Footer className = "my-card-footer">
+                                {backnav && <Link to={`${path}/${parseInt(question) - 1}`} >
+                                    {effectiveQuestionNumber === 0 ?
+                                        <Button variant="primary" className="my-btn back" disabled>Previous</Button> :
+                                        <Button variant="primary" className="my-btn back" onClick={onPrevious}>Previous</Button>
+                                    }
+                                </Link>}
                                 <Link to={`${path}/${parseInt(question) + 1}`} >
                                     {!displayFinish && <Button variant="primary" className="my-btn" onClick={onNext}>Next</Button>}
                                 </Link>
