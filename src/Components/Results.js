@@ -1,6 +1,6 @@
 // Author:Sreeevidya
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Table,Row,Col} from 'react-bootstrap';
 import TableScrollbar from 'react-table-scrollbar';
@@ -10,6 +10,12 @@ import FetchData from "../utils/FetchData";
 
 function Results(props) {
 
+  // fetching session data
+  const sesssionDetails = quizData();
+  sesssionDetails['result'] = true;
+  sesssionDetails['instructions'] = true;
+  const [quizUserData, setQuizUserData] = useState(sesssionDetails);
+
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
@@ -17,6 +23,28 @@ function Results(props) {
   // Fetching the answer data.
   const {data,isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
  
+  useEffect(() => {
+      window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
+    }, [quizUserData]
+  );
+
+  // Getting the data from session.
+  function quizData() {
+    var sessionData = window.sessionStorage.getItem('quizData');
+    if(sessionData === null){
+        sessionData =  {
+            count: 1,
+            studentAnswerList: {},
+            result: false,
+            instructions : false
+        }
+    }else{
+        sessionData = JSON.parse(sessionData);
+    }
+    return sessionData;
+  }
+
+
   // This code is used to prepare result data to display in the table.
   if(!isLoading && !showResults){
     let tableData = [];
