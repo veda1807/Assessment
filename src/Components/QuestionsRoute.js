@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import Questions from "./Questions";
 
-function Questionss(props) {  
+function QuestionsRoute(props) {  
   let { path} = useRouteMatch(); 
 
   return (  
@@ -28,4 +28,4 @@ function Questionss(props) {
     </div>  
   );
 }
-export default Questionss;
+export default QuestionsRoute;

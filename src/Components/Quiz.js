@@ -8,7 +8,7 @@ import {
     Route
   } from "react-router-dom";
 import Instructions from "./Instructions";
-import Questionss from "./Questionss";
+import QuestionsRoute from "./QuestionsRoute";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
 import Start  from "./Start.js";
@@ -40,7 +40,7 @@ function Quiz() {
                     {!isLoading && <Instructions instructions={data.instructions} />}
                 </Route>
                 <Route path={`${path}/Questions`}>
-                {!isLoading  && <Questionss questions={data.questions} showResults = {showResult} config = {data.config}/>}
+                {!isLoading  && <QuestionsRoute questions={data.questions} showResults = {showResult} config = {data.config}/>}
                 </Route>
                 <Route path={`${path}/Results`}>
                     {!isLoading && <Results questions={data.questions} studentAnswerList={studentAnswerList}/>}

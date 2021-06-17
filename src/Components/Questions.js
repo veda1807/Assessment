@@ -7,17 +7,18 @@ import {
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,Form, Modal  } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form, Modal } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
 import Timer from './Timer';
+import Editor from './Editor';
 
 function Questions(props) {
-
+    
     //search params
     var { question } = useParams();
     const effectiveQuestionNumber = parseInt(question) - 1;
-
+    
     // Getting session data
     const sesssionDetails = quizData();
     const [quizUserData, setQuizUserData] = useState(sesssionDetails);
@@ -28,28 +29,28 @@ function Questions(props) {
     const startTime = quizUserData['startTime'];
     const showInstructions = quizUserData['instructions'];
     const showResult = quizUserData['result'];
-
+        
     // url path
     const path = props.path; 
     const questions = props.questions;
     const backnav = props.config["backnav"];
-
+    
     // Checking for finish button visibility
     const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
-
+    
     // Checking whether the question number is valid or not
     const isValidQuestionNumber = parseInt(question) === count;
-
+    
     // Checking the type of the question
     const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
-
+    
     // State variables
     const [showQuitWarning, setShowQuitWarning] = useState(false);
     const [studentResponse, setStudentResponse] = useState(studentResponceIfExist);
     const [displayResponse, setDisplayResponse] = useState('');
     const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
-
+    
     useEffect(() => {
             window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
             if(studentResponse == ""){
@@ -57,12 +58,16 @@ function Questions(props) {
             }
         }, [quizUserData,studentResponse]
     );
-
-    // Getting the data from session.
-    function quizData() {
-        var sessionData = window.sessionStorage.getItem('quizData');
-        if(sessionData === null){
-            sessionData =  {
+    
+    // For setting Editor view
+    const [view, setView] = useState(null);
+    
+        
+        // Getting the data from session.
+        function quizData() {
+            var sessionData = window.sessionStorage.getItem('quizData');
+            if (sessionData === null) {
+                sessionData =  {
                 count: 1,
                 studentAnswerList: {},
                 result: false,
@@ -70,7 +75,7 @@ function Questions(props) {
                 startTime: new Date(),
                 endTime : null
             }
-        }else{
+        } else {
             sessionData = JSON.parse(sessionData);
         }
         return sessionData;
@@ -110,6 +115,15 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
+        clearIframe();
+    }
+
+    function clearIframe() {
+        var iframe = document.getElementById("output_frame")
+        var html = ""
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
     }
 
     // This method is used to move to previous question on clicking on Previous button. -> Written by Pragya
@@ -124,15 +138,13 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
+        clearIframe();
     }
 
     // This method used to show results on clicking the Finish button. 
     function onFinish() {
-        // let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
-        // console.log(timeString);
         let params = {
-            questions: questions,
-            // timer:[parseInt(timeString[0]), parseInt(timeString[1]), parseInt(timeString[2])],
+            questions: questions, 
             studentAnswerList: studentAnswerList
         }
         props.showResults(params);
@@ -147,6 +159,7 @@ function Questions(props) {
     function handleShow() {
         setShowQuitWarning(true);
     }
+
 
     return (
         // Last edited by : Pragya 
@@ -163,7 +176,6 @@ function Questions(props) {
                                 <Row>                          
                                     <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                                     <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
-                                    {/* <Col sm="4"><h5 className="timer text-right align-middle"><Timer /></h5></Col> */}
                                 </Row>
                             </Card.Header>
 
@@ -171,7 +183,13 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
+                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
+                                    <Editor 
+                                        setView = {setView}
+                                        language = {questions[effectiveQuestionNumber].question["language"]}
+                                        content = {questions[effectiveQuestionNumber].question["snippet"]}
+                                        editable = {false}
+                                    />
                                 </div>
                                 <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 

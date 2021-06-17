@@ -3,17 +3,18 @@
 // This file creates a code editor using codemirror 6
 
 import React, { useEffect, useRef } from 'react'
-import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
+import { EditorState, EditorView } from '@codemirror/basic-setup';
 import { java } from '@codemirror/lang-java';
-import {myTheme, myHighlightStyle } from './Style';
 import { python } from '@codemirror/lang-python';
+import { setupNonEditable, setupEditable } from './Setup';
 
 export default function Editor(props) {
     
     const {
         setView,
         language,
-        content
+        content,
+        editable
     } = props;
     
     const editor = useRef();
@@ -27,13 +28,20 @@ export default function Editor(props) {
             lang = java()
         }
 
+        let setup;
+        if (editable) {
+            setup = setupEditable
+        }
+        else {
+            setup = setupNonEditable
+        }
+
         const state = EditorState.create({
             doc: content,
             extensions: [
-                basicSetup, 
-                lang,
-                myTheme,
-                myHighlightStyle
+                EditorView.contentAttributes.of({ contenteditable : editable }),
+                setup,
+                lang
             ],
         });
 
@@ -48,9 +56,9 @@ export default function Editor(props) {
             view.destroy();
             setView(null);
         }
-    }, [language, content, setView])
+    }, [language, content, setView, editable])
 
     return (
-        <div className="editor-box" ref = {editor}></div>
+        <div className="editor-box" ref = {editor}/>
     )
 }
