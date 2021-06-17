@@ -21,9 +21,19 @@ function Results(props) {
   const [isFillupExist, setIsFillupExist] = useState(false);
 
   // Fetching the answer data.
-  const {data,isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
- 
-  useEffect(() => {
+  const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
+
+  fetch("http://localhost:4000/answers", {
+    method : "POST",
+    body : JSON.stringify(props.studentAnswerList),
+    headers : {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+    .then(response => response.json())
+    .then(json => console.log(json))
+  
+  useEffect(() => { 
       window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
     }, [quizUserData]
   );
@@ -36,7 +46,7 @@ function Results(props) {
             count: 1,
             studentAnswerList: {},
             result: false,
-            instructions : false
+            instructions : false,
         }
     }else{
         sessionData = JSON.parse(sessionData);
@@ -53,7 +63,7 @@ function Results(props) {
         setIsFillupExist(true);
         let tdData = {
           key: props.questions[i].key,
-          question: props.questions[i].question,
+          question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
           answer: data.answers[i].answer
         }
         tableData.push(tdData);
@@ -96,8 +106,8 @@ function Results(props) {
                 <For of={tableData} as={tdData =>
                 <tr>
                   <td>{tdData.key}</td>
-                  <td><NewLine text={tdData.question}></NewLine></td>
-                  <td>{tdData.answer}</td>
+                  <td><NewLine text={tdData.question}/></td>
+                  <td><NewLine text={tdData.answer}/></td>
                   <td></td>
                 </tr>
                }/>

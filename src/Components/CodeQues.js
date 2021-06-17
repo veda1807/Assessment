@@ -15,13 +15,13 @@ export default function CodeQues(props) {
     const [result, setResult] = useState("");
     const [openQues, setOpenQues] = useState(true);
     const [openEditor, setOpenEditor] = useState(true);
-
+    
     const runCode = () => {
         if (view === null) return;
         const code = view.state.doc.toString();
         setResult(code);
     };
-
+    
     const submitCode = () => {
         setResult("Submission yet to be implemented");
     }
@@ -44,7 +44,7 @@ export default function CodeQues(props) {
                         </Nav>
                     </div>
                     <div className = "coding-question">
-                        <NewLine text= {props.question["problem"]} />                        
+                        <NewLine text= {props.question["problem"]} />
                         {props.question["sample"] != null && 
                             <div>
                                 {props.question["sample"].map(sample => (
@@ -90,14 +90,15 @@ export default function CodeQues(props) {
                             setView = {setView}
                             language = {props.question["language"]}
                             content = {props.question["snippet"]}
+                            editable = {true}
                         />
                         <Button variant="outline-success" className = "editor-btns submit" size = "sm" onClick = {submitCode}> Submit </Button>
                         <Button variant="outline-success" className = "editor-btns run" size = "sm" onClick = {runCode}> Run </Button>
-                        {/* <Button variant="outline-primary" className = "editor-btns reset" size = "sm" onClick = {resetCode}> Reset </Button> */}
                         <iframe
                             title = "output"
+                            id = "output_frame"
                             srcDoc = {result}
-                            frameBorder = "1px"
+                            frameBorder = "2px"
                             width = "100%"
                             height = "100px"
                         />                    
@@ -144,6 +145,7 @@ export default function CodeQues(props) {
                             setView = {setView}
                             language = {props.question["language"]}
                             content = {props.question["snippet"]}
+                            editable = {true}
                         />
                         <Button variant="outline-success" className = "editor-btns submit" size = "sm" onClick = {submitCode}> Submit </Button>
                         <Button variant="outline-success" className = "editor-btns run" size = "sm" onClick = {runCode}> Run </Button>

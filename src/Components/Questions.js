@@ -7,17 +7,18 @@ import {
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,Form, Modal  } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form, Modal } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
 import Timer from './Timer';
+import Editor from './Editor';
 
 function Questions(props) {
-
+    
     //search params
     var { question } = useParams();
     const effectiveQuestionNumber = parseInt(question) - 1;
-
+    
     // Getting session data
     const sesssionDetails = quizData();
     const [quizUserData, setQuizUserData] = useState(sesssionDetails);
@@ -27,44 +28,48 @@ function Questions(props) {
     const count = quizUserData['count'];
     const showInstructions = quizUserData['instructions'];
     const showResult = quizUserData['result'];
-
+        
     // url path
     const path = props.path; 
     const questions = props.questions;
     const backnav = props.config["backnav"];
-
+    
     // Checking for finish button visibility
     const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
-
+    
     // Checking whether the question number is valid or not
     const isValidQuestionNumber = parseInt(question) === count;
-
+    
     // Checking the type of the question
     const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
-
+    
     // State variables
     const [showQuitWarning, setShowQuitWarning] = useState(false);
     const [studentResponse, setStudentResponse] = useState(studentResponceIfExist);
     const [displayResponse, setDisplayResponse] = useState('');
     const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
-
+    
     useEffect(() => {
-            window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-        }, [quizUserData]
+        window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
+    }, [quizUserData]
     );
-
-    // Getting the data from session.
-    function quizData() {
-        var sessionData = window.sessionStorage.getItem('quizData');
-        if(sessionData === null){
-            sessionData =  {
+    
+    // For setting Editor view
+    const [view, setView] = useState(null);
+    
+        
+        // Getting the data from session.
+        function quizData() {
+            var sessionData = window.sessionStorage.getItem('quizData');
+            if (sessionData === null) {
+                sessionData =  {
                 count: 1,
                 studentAnswerList: {},
                 result: false,
                 instructions : false
             }
-        }else{
+        } else {
             sessionData = JSON.parse(sessionData);
         }
         return sessionData;
@@ -100,6 +105,15 @@ function Questions(props) {
             result: false,
             instructions : false
         });
+        clearIframe();
+    }
+
+    function clearIframe() {
+        var iframe = document.getElementById("output_frame")
+        var html = ""
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
     }
 
     // This method is used to move to previous question on clicking on Previous button. -> Written by Pragya
@@ -110,6 +124,7 @@ function Questions(props) {
             count: count-1,
             studentAnswerList: studentAnswerList
         });
+        clearIframe();
     }
 
     // This method used to show results on clicking the Finish button. 
@@ -134,6 +149,7 @@ function Questions(props) {
         setShowQuitWarning(true);
     }
 
+
     return (
         // Last edited by : Pragya 
         <div>
@@ -157,7 +173,13 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
+                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
+                                    <Editor 
+                                        setView = {setView}
+                                        language = {questions[effectiveQuestionNumber].question["language"]}
+                                        content = {questions[effectiveQuestionNumber].question["snippet"]}
+                                        editable = {false}
+                                    />
                                 </div>
                                 <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
