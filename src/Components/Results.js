@@ -39,7 +39,7 @@ function Results(props) {
     }
   })
     .then(response => response.json())
-    .then(json => console.log(json))
+    // .then(json => console.log(json))
   
   useEffect(() => { 
       window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
@@ -106,11 +106,11 @@ function Results(props) {
       difference += (days === 1) ? `${days}` : `${days} `;
     }
 
-    difference += (hours == 0 ? '00:' : hours < 10 ? `0${hours}:` : `${hours}:`);
+    difference += (hours === 0 ? '00:' : hours < 10 ? `0${hours}:` : `${hours}:`);
 
-    difference += (minutes == 0 ? '00:' : minutes < 10 ? `0${minutes}:` : `${minutes}:`); 
+    difference += (minutes === 0 ? '00:' : minutes < 10 ? `0${minutes}:` : `${minutes}:`); 
 
-    difference += (seconds == 0 ? '00:' : seconds < 10 ? `0${seconds}` : `${seconds}`);  
+    difference += (seconds === 0 ? '00:' : seconds < 10 ? `0${seconds}` : `${seconds}`);  
 
     return difference;
   }
@@ -141,7 +141,7 @@ function Results(props) {
                   <th>#</th>
                   <th>Question</th>
                   <th>Answer</th>
-                  <th>Correctness</th>
+                  <th>Verdict</th>
                 </tr>
               </thead>
               <tbody className="results-tbody">
@@ -150,7 +150,7 @@ function Results(props) {
                   <td>{tdData.key}</td>
                   <td><NewLine text={tdData.question}/></td>
                   <td><NewLine text={tdData.answer}/></td>
-//                 Edited by Yash
+                  {/* Edited by yash */}
                   <td>{tdData.correctness}</td>
                 </tr>
                }/>

@@ -53,7 +53,7 @@ function Questions(props) {
     
     useEffect(() => {
             window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-            if(studentResponse == ""){
+            if(studentResponse === ""){
                 setStudentResponse(studentResponceIfExist);
             }
         }, [quizUserData,studentResponse]
@@ -115,7 +115,7 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
-        clearIframe();
+        // clearIframe();
     }
 
     function clearIframe() {
@@ -138,7 +138,7 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
-        clearIframe();
+        // clearIframe();
     }
 
     // This method used to show results on clicking the Finish button. 

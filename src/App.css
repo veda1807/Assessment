@@ -161,3 +161,7 @@
 .explanation .heading {
   font-weight: bold;
 }
+
+.answer_status {
+  padding-left: 5%;
+}
