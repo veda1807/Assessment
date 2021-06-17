@@ -72,7 +72,9 @@ function Results(props) {
         let tdData = {
           key: props.questions[i].key,
           question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
-          answer: data.answers[i].answer
+          answer: data.answers[i].answer,
+//        Edited by Yash
+          correctness: quizData().studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
         }
         tableData.push(tdData);
       }
@@ -148,7 +150,8 @@ function Results(props) {
                   <td>{tdData.key}</td>
                   <td><NewLine text={tdData.question}/></td>
                   <td><NewLine text={tdData.answer}/></td>
-                  <td></td>
+//                 Edited by Yash
+                  <td>{tdData.correctness}</td>
                 </tr>
                }/>
               </tbody>
