@@ -26,6 +26,7 @@ function Questions(props) {
     const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
         sesssionDetails.studentAnswerList[question]) || "";
     const count = quizUserData['count'];
+    const startTime = quizUserData['startTime'];
     const showInstructions = quizUserData['instructions'];
     const showResult = quizUserData['result'];
         
@@ -51,8 +52,11 @@ function Questions(props) {
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
     
     useEffect(() => {
-        window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-    }, [quizUserData]
+            window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
+            if(studentResponse == ""){
+                setStudentResponse(studentResponceIfExist);
+            }
+        }, [quizUserData,studentResponse]
     );
     
     // For setting Editor view
@@ -67,7 +71,9 @@ function Questions(props) {
                 count: 1,
                 studentAnswerList: {},
                 result: false,
-                instructions : false
+                instructions : false,
+                startTime: new Date(),
+                endTime : null
             }
         } else {
             sessionData = JSON.parse(sessionData);
@@ -85,7 +91,9 @@ function Questions(props) {
             count: count,
             studentAnswerList: studentAnswerList,
             result: false,
-            instructions : false
+            instructions : false,
+            startTime: startTime,
+            endTime : null
         });
         setStudentAnswerList(studentAnswerList);
         setTimeout(() => {
@@ -103,7 +111,9 @@ function Questions(props) {
             count: count+1,
             studentAnswerList: studentAnswerList,
             result: false,
-            instructions : false
+            instructions : false,
+            startTime: startTime,
+            endTime : null
         });
         clearIframe();
     }
@@ -122,18 +132,19 @@ function Questions(props) {
         setDisplayResponse('');
         setQuizUserData({
             count: count-1,
-            studentAnswerList: studentAnswerList
+            studentAnswerList: studentAnswerList,
+            result: false,
+            instructions : false,
+            startTime: startTime,
+            endTime : null
         });
         clearIframe();
     }
 
     // This method used to show results on clicking the Finish button. 
     function onFinish() {
-        let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
-        // console.log(timeString);
         let params = {
-            questions: questions,
-            timer:[parseInt(timeString[0]), parseInt(timeString[1]), parseInt(timeString[2])],
+            questions: questions, 
             studentAnswerList: studentAnswerList
         }
         props.showResults(params);
@@ -165,7 +176,6 @@ function Questions(props) {
                                 <Row>                          
                                     <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                                     <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
-                                    <Col sm="4"><h5 className="timer text-right align-middle"><Timer /></h5></Col>
                                 </Row>
                             </Card.Header>
 
@@ -202,8 +212,8 @@ function Questions(props) {
                             <Card.Footer className = "my-card-footer">
                                 {backnav && <Link to={`${path}/${parseInt(question) - 1}`} >
                                     {effectiveQuestionNumber === 0 ?
-                                        <Button variant="primary" className="my-btn back" disabled>Previous</Button> :
-                                        <Button variant="primary" className="my-btn back" onClick={onPrevious}>Previous</Button>
+                                        <Button variant="primary" className="my-btn back" disabled>Back</Button> :
+                                        <Button variant="primary" className="my-btn back" onClick={onPrevious}>Back</Button>
                                     }
                                 </Link>}
                                 <Link to={`${path}/${parseInt(question) + 1}`} >

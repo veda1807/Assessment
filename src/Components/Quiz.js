@@ -15,7 +15,7 @@ import Start  from "./Start.js";
 
 function Quiz() {
     let { path } = useRouteMatch();
-    const [timer, setTimer] = useState([]);
+    // const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
     // Fetched instructions and questions data from JSON file using FetchData component. 
@@ -23,7 +23,7 @@ function Quiz() {
 
     // This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){
-        setTimer(childQuestionsstate.timer);
+        // setTimer(childQuestionsstate.timer);
         setStudentAnswerList(childQuestionsstate.studentAnswerList);
     }
 
@@ -43,7 +43,7 @@ function Quiz() {
                 {!isLoading  && <QuestionsRoute questions={data.questions} showResults = {showResult} config = {data.config}/>}
                 </Route>
                 <Route path={`${path}/Results`}>
-                    {!isLoading && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
+                    {!isLoading && <Results questions={data.questions} studentAnswerList={studentAnswerList}/>}
                 </Route>    
                 </Switch>   
             </Router>

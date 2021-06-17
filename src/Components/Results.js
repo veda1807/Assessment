@@ -14,11 +14,19 @@ function Results(props) {
   const sesssionDetails = quizData();
   sesssionDetails['result'] = true;
   sesssionDetails['instructions'] = true;
-  const [quizUserData, setQuizUserData] = useState(sesssionDetails);
+  const endTime = sesssionDetails['endTime'];
+  if(endTime === null){
+    sesssionDetails['endTime'] = new Date();
+  } 
+  const [quizUserData] = useState(sesssionDetails);
+
+  const startTime = sesssionDetails['startTime'];
 
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
+
+  const diffTime = timeDiffCalc(new Date(startTime), new Date(endTime));
 
   // Fetching the answer data.
   const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
@@ -73,6 +81,38 @@ function Results(props) {
     setShowResults(true);
   }
 
+  function timeDiffCalc(dateFuture, dateNow) {
+    let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;
+
+    // calculate days
+    const days = Math.floor(diffInMilliSeconds / 86400);
+    diffInMilliSeconds -= days * 86400;
+
+    // calculate hours
+    const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+    diffInMilliSeconds -= hours * 3600;
+
+    // calculate minutes
+    const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+    diffInMilliSeconds -= minutes * 60;
+
+    // calculate seconds
+    const seconds = Math.floor(diffInMilliSeconds) % 60;
+
+    let difference = '';
+    if (days > 0) {
+      difference += (days === 1) ? `${days}` : `${days} `;
+    }
+
+    difference += (hours == 0 ? '00:' : hours < 10 ? `0${hours}:` : `${hours}:`);
+
+    difference += (minutes == 0 ? '00:' : minutes < 10 ? `0${minutes}:` : `${minutes}:`); 
+
+    difference += (seconds == 0 ? '00:' : seconds < 10 ? `0${seconds}` : `${seconds}`);  
+
+    return difference;
+  }
+
 
   return (
     <div className="my-instructions">
@@ -83,7 +123,7 @@ function Results(props) {
         <div className="report">
           <Row>
             <Col sm="6" className="text-center"><b>Score:</b></Col>
-            <Col sm="6" className="text-center"><b>Time:{props.timer[0] < 10 ? '0'+ props.timer[0] : props.timer[0]}:{props.timer[1] < 10 ? '0'+ props.timer[1] : props.timer[1]}:{props.timer[2] < 10 ? '0'+ props.timer[2] : props.timer[2]}</b></Col>
+            <Col sm="6" className="text-center"><b>Time:{diffTime}</b></Col>
           </Row>
           <Row>
             <Col sm="6" className="text-center"><b>Percentage</b>:</Col>
