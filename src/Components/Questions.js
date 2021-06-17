@@ -50,12 +50,13 @@ function Questions(props) {
     const [displayResponse, setDisplayResponse] = useState('');
     const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
+    // const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     
     useEffect(() => {
             window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-            if(studentResponse === ""){
-                setStudentResponse(studentResponceIfExist);
-            }
+            // if(studentResponse === "" && !isEditingAnswer){
+            //     setStudentResponse(studentResponceIfExist);
+            // }
         }, [quizUserData,studentResponse]
     );
     
@@ -82,6 +83,9 @@ function Questions(props) {
     }
     
     function studentInput(e){
+        // if(e.target.value === ""){
+        //     setIsEditingAnswer(true);
+        // }
         setStudentResponse(e.target.value);
     }
 
@@ -105,7 +109,9 @@ function Questions(props) {
 
     // This method is used to move to next question on clicking on Next button.
     function onNext() {
-        setStudentResponse('');
+        var nextQuesAns = ((parseInt(question) + 1) < questions.length && sesssionDetails &&  sesssionDetails.studentAnswerList && 
+            sesssionDetails.studentAnswerList[parseInt(question) + 1]) || "";
+        setStudentResponse(nextQuesAns);
         setDisplayResponse('');
         setQuizUserData({
             count: count+1,
@@ -128,7 +134,9 @@ function Questions(props) {
 
     // This method is used to move to previous question on clicking on Previous button. -> Written by Pragya
     function onPrevious() {
-        setStudentResponse('');
+        var prevQuesAns = ((parseInt(question) - 1) < questions.length && sesssionDetails &&  sesssionDetails.studentAnswerList && 
+            sesssionDetails.studentAnswerList[parseInt(question) - 1]) || "";
+        setStudentResponse(prevQuesAns);
         setDisplayResponse('');
         setQuizUserData({
             count: count-1,
@@ -183,7 +191,7 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
+                                    <NewLine text={questions[effectiveQuestionNumber].question["snippet"]} />
                                     <Editor 
                                         setView = {setView}
                                         language = {questions[effectiveQuestionNumber].question["language"]}
