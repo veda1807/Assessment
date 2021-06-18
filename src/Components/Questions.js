@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Button, Row, Col, Form, Modal } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
-import Timer from './Timer';
 import Editor from './Editor';
 
 function Questions(props) {
@@ -27,7 +26,6 @@ function Questions(props) {
         sesssionDetails.studentAnswerList[question]) || "";
     const count = quizUserData['count'];
     const startTime = quizUserData['startTime'];
-    const showInstructions = quizUserData['instructions'];
     const showResult = quizUserData['result'];
         
     // url path
@@ -50,13 +48,9 @@ function Questions(props) {
     const [displayResponse, setDisplayResponse] = useState('');
     const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
-    // const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     
     useEffect(() => {
             window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-            // if(studentResponse === "" && !isEditingAnswer){
-            //     setStudentResponse(studentResponceIfExist);
-            // }
         }, [quizUserData,studentResponse]
     );
     
@@ -64,28 +58,25 @@ function Questions(props) {
     const [view, setView] = useState(null);
     
         
-        // Getting the data from session.
-        function quizData() {
-            var sessionData = window.sessionStorage.getItem('quizData');
-            if (sessionData === null) {
-                sessionData =  {
-                count: 1,
-                studentAnswerList: {},
-                result: false,
-                instructions : false,
-                startTime: new Date(),
-                endTime : null
-            }
-        } else {
-            sessionData = JSON.parse(sessionData);
+    // Getting the data from session.
+    function quizData() {
+        var sessionData = window.sessionStorage.getItem('quizData');
+        if (sessionData === null) {
+            sessionData =  {
+            count: 1,
+            studentAnswerList: {},
+            result: false,
+            instructions : false,
+            startTime: new Date(),
+            endTime : null
         }
-        return sessionData;
+    } else {
+        sessionData = JSON.parse(sessionData);
+    }
+    return sessionData;
     }
     
     function studentInput(e){
-        // if(e.target.value === ""){
-        //     setIsEditingAnswer(true);
-        // }
         setStudentResponse(e.target.value);
     }
 
@@ -124,18 +115,11 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
-        // clearIframe();
+        if (document.getElementById("output_frame"))
+            clearIframe();
     }
-
-    function clearIframe() {
-        var iframe = document.getElementById("output_frame")
-        var html = ""
-        iframe.contentWindow.document.open();
-        iframe.contentWindow.document.write(html);
-        iframe.contentWindow.document.close();
-    }
-
-    // This method is used to move to previous question on clicking on Previous button. -> Written by Pragya
+    
+    // This method is used to move to previous question on clicking on Back button -> Written by Pragya
     function onPrevious() {
         var prevQuesAns = ((parseInt(question) - 1) < questions.length && sesssionDetails &&  sesssionDetails.studentAnswerList && 
             sesssionDetails.studentAnswerList[parseInt(question) - 1]) || "";
@@ -149,9 +133,19 @@ function Questions(props) {
             startTime: startTime,
             endTime : null
         });
-        // clearIframe();
+        if (document.getElementById("output_frame"))
+            clearIframe();
     }
 
+    //This method is used to clear the output iframe in editor questions on navigation to next or previous question -> Written by Pragya
+    function clearIframe() {
+        var iframe = document.getElementById("output_frame")
+        var html = ""
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
+    }
+    
     // This method used to show results on clicking the Finish button. 
     function onFinish() {
         let params = {
@@ -188,7 +182,7 @@ function Questions(props) {
                     <div className = "details">
                         <Card className = "my-card">
                             <Card.Header className = "my-card-header">
-                                <Row>                          
+                                <Row>
                                     <Col sm=""></Col>
                                     <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
                                     <Col sm="4"><h5 className="text-right align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
@@ -210,7 +204,7 @@ function Questions(props) {
                                 <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
                                         <h5> Answer </h5>
-                                        <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
+                                        <Form.Control as="textarea"  rows={5} className="my-input" value={studentResponse} onChange={studentInput}/>
                                     </Form.Group>                               
                                     <Button variant="success" onClick={recordAnswer}>Submit</Button> 
                                     <span className="answer_status"><b>{displayResponse}</b></span>

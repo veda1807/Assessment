@@ -1,6 +1,6 @@
-/* Author:Sreeevidya */
+/* Author : Sreeevidya */
 
-/* This CSS is a part of UI for fillups, editor and navigation */
+/* This CSS is a part of UI for instructions, fillups, editor and navigation */
 
 .flex-parent {
   display: flex;
@@ -72,7 +72,7 @@
 }
 
 .my-cardbody-fillups .question {
-  height: 160px;
+  height: 250px;
   width:100%;
   overflow: auto;
 }
@@ -120,7 +120,7 @@
 }
 
 .coding-question {
-  max-height: 480px;
+  max-height: 450px;
   width:100%;
   overflow: auto;
   margin: 10px;
