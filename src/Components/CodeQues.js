@@ -21,9 +21,10 @@ export default function CodeQues(props) {
         const code = view.state.doc.toString();
         setResult(code);
     };
-    
+
     const submitCode = () => {
         setResult("Submission yet to be implemented");
+        props.saveCode(view.state.doc.toString());
     }
 
     if ((openQues && openEditor) || (!openQues && !openEditor)){

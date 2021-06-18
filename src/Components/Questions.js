@@ -89,8 +89,11 @@ function Questions(props) {
         setStudentResponse(e.target.value);
     }
 
-    function recordAnswer() {
+    function recordAnswer(code) {
         studentAnswerList[question] = studentResponse; 
+        if (type == 'Editor'){
+            studentAnswerList[question] = code;
+        }
         setQuizUserData({
             count: count,
             studentAnswerList: studentAnswerList,
@@ -168,6 +171,10 @@ function Questions(props) {
         setShowQuitWarning(true);
     }
 
+    function saveCode(code){
+        setStudentResponse(code);
+        recordAnswer(code);
+    }
 
     return (
         // Last edited by : Pragya 
@@ -182,8 +189,9 @@ function Questions(props) {
                         <Card className = "my-card">
                             <Card.Header className = "my-card-header">
                                 <Row>                          
-                                    <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
+                                    <Col sm=""></Col>
                                     <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
+                                    <Col sm="4"><h5 className="text-right align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                                 </Row>
                             </Card.Header>
 
@@ -191,7 +199,7 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine text={questions[effectiveQuestionNumber].question["snippet"]} />
+                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
                                     <Editor 
                                         setView = {setView}
                                         language = {questions[effectiveQuestionNumber].question["language"]}
@@ -213,7 +221,7 @@ function Questions(props) {
                         {type === "Editor" &&
                         <Card.Body>
                             <CodeQues 
-                                question = {questions[effectiveQuestionNumber].question}
+                                question = {questions[effectiveQuestionNumber].question} saveCode = {saveCode} 
                             />
                         </Card.Body> }
 
