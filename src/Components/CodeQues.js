@@ -19,6 +19,7 @@ export default function CodeQues(props) {
     const runCode = () => {
         if (view === null) return;
         const code = view.state.doc.toString();
+        // console.log(code)
         setResult(code);
     };
     
@@ -149,9 +150,9 @@ export default function CodeQues(props) {
                         />
                         <Button variant="outline-success" className = "editor-btns submit" size = "sm" onClick = {submitCode}> Submit </Button>
                         <Button variant="outline-success" className = "editor-btns run" size = "sm" onClick = {runCode}> Run </Button>
-                        {/* <Button variant="outline-primary" className = "editor-btns reset" size = "sm" onClick = {resetCode}> Reset </Button> */}
                         <iframe
                             title = "output"
+                            id = "output_frame"
                             srcDoc = {result}
                             frameBorder = "1px"
                             width = "100%"

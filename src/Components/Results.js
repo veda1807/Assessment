@@ -39,7 +39,6 @@ function Results(props) {
     }
   })
     .then(response => response.json())
-    // .then(json => console.log(json))
   
   useEffect(() => { 
       window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
@@ -73,7 +72,7 @@ function Results(props) {
           key: props.questions[i].key,
           question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
           answer: data.answers[i].answer,
-//        Edited by Yash
+        // Edited by Yash
           correctness: quizData().studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
         }
         tableData.push(tdData);
