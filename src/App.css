@@ -1,6 +1,6 @@
-/* Author:Sreeevidya */
+/* Author : Sreeevidya */
 
-/* This CSS is a part of UI for fillups, editor and navigation */
+/* This CSS is a part of UI for instructions, fillups, editor and navigation */
 
 .flex-parent {
   display: flex;
@@ -43,7 +43,7 @@
 
 .my-btn {
   float:right;
-  width:80px;
+  width:fit-content;
   margin-left:10px;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .my-cardbody-fillups .question {
-  height: 160px;
+  height: 250px;
   width:100%;
   overflow: auto;
 }
@@ -120,24 +120,52 @@
 }
 
 .coding-question {
-  max-height: 480px;
+  max-height: 42  0px;
   width:100%;
   overflow: auto;
+  margin: 10px;
 }
 
 .editor-btns {
   margin: 2px;
+  float: right;
+  font-weight: bold;
 }
 
-.reset {
-  float: right;
+.back {
+  float: left;
 }
 
 .sec-title {
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.col-md-1 {
+  margin-top: 40px;
+}
+
+.sample-testcase .heading {
+  font-weight: bold;
+  font-size: smaller;
+}
+
+.sample-testcase .data {
+  font-size: smaller;
+  font-family: monospace;
+  line-height: normal;
+  text-indent: 20px;
+  background-color: #eee;
+  padding: 5px;
+}
+
+.explanation .heading {
+  font-weight: bold;
 }
 
 .answer_status {
-  margin-left: 3%;
+  padding-left: 5%;
+}
+
+.report .header {
+  padding-left: 20%;
 }

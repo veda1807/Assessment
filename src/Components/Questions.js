@@ -7,17 +7,17 @@ import {
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,Form, Modal  } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form, Modal } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
-import Timer from './Timer';
+import Editor from './Editor';
 
 function Questions(props) {
-
+    
     //search params
     var { question } = useParams();
     const effectiveQuestionNumber = parseInt(question) - 1;
-
+    
     // Getting session data
     const sesssionDetails = quizData();
     const [quizUserData, setQuizUserData] = useState(sesssionDetails);
@@ -25,61 +25,73 @@ function Questions(props) {
     const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
         sesssionDetails.studentAnswerList[question]) || "";
     const count = quizUserData['count'];
-    const showInstructions = quizUserData['instructions'];
+    const startTime = quizUserData['startTime'];
     const showResult = quizUserData['result'];
-
+        
     // url path
     const path = props.path; 
     const questions = props.questions;
-
+    const backnav = props.config["backnav"];
+    
     // Checking for finish button visibility
     const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
-
+    
     // Checking whether the question number is valid or not
     const isValidQuestionNumber = parseInt(question) === count;
-
+    
     // Checking the type of the question
     const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
-
+    
     // State variables
     const [showQuitWarning, setShowQuitWarning] = useState(false);
     const [studentResponse, setStudentResponse] = useState(studentResponceIfExist);
     const [displayResponse, setDisplayResponse] = useState('');
     const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
     const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
-
+    
     useEffect(() => {
             window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
-        }, [quizUserData]
+        }, [quizUserData,studentResponse]
     );
-
+    
+    // For setting Editor view
+    const [view, setView] = useState(null);
+    
+        
     // Getting the data from session.
     function quizData() {
         var sessionData = window.sessionStorage.getItem('quizData');
-        if(sessionData === null){
+        if (sessionData === null) {
             sessionData =  {
-                count: 1,
-                studentAnswerList: {},
-                result: false,
-                instructions : false
-            }
-        }else{
-            sessionData = JSON.parse(sessionData);
+            count: 1,
+            studentAnswerList: {},
+            result: false,
+            instructions : false,
+            startTime: new Date(),
+            endTime : null
         }
-        return sessionData;
+    } else {
+        sessionData = JSON.parse(sessionData);
+    }
+    return sessionData;
     }
     
     function studentInput(e){
         setStudentResponse(e.target.value);
     }
 
-    function recordAnswer() {
+    function recordAnswer(code) {
         studentAnswerList[question] = studentResponse; 
+        if (type === 'Editor'){
+            studentAnswerList[question] = code;
+        }
         setQuizUserData({
             count: count,
             studentAnswerList: studentAnswerList,
             result: false,
-            instructions : false
+            instructions : false,
+            startTime: startTime,
+            endTime : null
         });
         setStudentAnswerList(studentAnswerList);
         setTimeout(() => {
@@ -91,23 +103,53 @@ function Questions(props) {
 
     // This method is used to move to next question on clicking on Next button.
     function onNext() {
-        setStudentResponse('');
+        var nextQuesAns = ((parseInt(question) + 1) < questions.length && sesssionDetails &&  sesssionDetails.studentAnswerList && 
+            sesssionDetails.studentAnswerList[parseInt(question) + 1]) || "";
+        setStudentResponse(nextQuesAns);
         setDisplayResponse('');
         setQuizUserData({
             count: count+1,
             studentAnswerList: studentAnswerList,
             result: false,
-            instructions : false
+            instructions : false,
+            startTime: startTime,
+            endTime : null
         });
+        if (document.getElementById("output_frame"))
+            clearIframe();
+    }
+    
+    // This method is used to move to previous question on clicking on Back button -> Written by Pragya
+    function onPrevious() {
+        var prevQuesAns = ((parseInt(question) - 1) < questions.length && sesssionDetails &&  sesssionDetails.studentAnswerList && 
+            sesssionDetails.studentAnswerList[parseInt(question) - 1]) || "";
+        setStudentResponse(prevQuesAns);
+        setDisplayResponse('');
+        setQuizUserData({
+            count: count-1,
+            studentAnswerList: studentAnswerList,
+            result: false,
+            instructions : false,
+            startTime: startTime,
+            endTime : null
+        });
+        if (document.getElementById("output_frame"))
+            clearIframe();
     }
 
+    //This method is used to clear the output iframe in editor questions on navigation to next or previous question -> Written by Pragya
+    function clearIframe() {
+        var iframe = document.getElementById("output_frame")
+        var html = ""
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(html);
+        iframe.contentWindow.document.close();
+    }
+    
     // This method used to show results on clicking the Finish button. 
     function onFinish() {
-        let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
-        // console.log(timeString);
         let params = {
-            questions: questions,
-            timer:[parseInt(timeString[0]), parseInt(timeString[1]), parseInt(timeString[2])],
+            questions: questions, 
             studentAnswerList: studentAnswerList
         }
         props.showResults(params);
@@ -123,6 +165,12 @@ function Questions(props) {
         setShowQuitWarning(true);
     }
 
+    // This method is used to save the code for coding questions in the session storage
+    function saveCode(code){
+        setStudentResponse(code);
+        recordAnswer(code);
+    }
+
     return (
         // Last edited by : Pragya 
         <div>
@@ -135,10 +183,9 @@ function Questions(props) {
                     <div className = "details">
                         <Card className = "my-card">
                             <Card.Header className = "my-card-header">
-                                <Row>                          
-                                    <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
-                                    <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
-                                    <Col sm="4"><h5 className="timer text-right align-middle"><Timer /></h5></Col>
+                                <Row>
+                                    <Col sm="6"><h4 className="text-left align-middle">Question {parseInt(question)}</h4></Col>
+                                    <Col sm="6"><h5 className="text-right align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                                 </Row>
                             </Card.Header>
 
@@ -146,12 +193,18 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
+                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
+                                    <Editor 
+                                        setView = {setView}
+                                        language = {questions[effectiveQuestionNumber].question["language"]}
+                                        content = {questions[effectiveQuestionNumber].question["snippet"]}
+                                        editable = {false}
+                                    />
                                 </div>
                                 <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
                                         <h5> Answer </h5>
-                                        <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
+                                        <Form.Control as="textarea"  rows={5} className="my-input" value={studentResponse} onChange={studentInput}/>
                                     </Form.Group>                               
                                     <Button variant="success" onClick={recordAnswer}>Submit</Button> 
                                     <span className="answer_status"><b>{displayResponse}</b></span>
@@ -163,10 +216,18 @@ function Questions(props) {
                         <Card.Body>
                             <CodeQues 
                                 question = {questions[effectiveQuestionNumber].question}
+                                studentResponse = {sesssionDetails.studentAnswerList[parseInt(question)] ? sesssionDetails.studentAnswerList[parseInt(question)] : questions[effectiveQuestionNumber].question["snippet"]}
+                                saveCode = {saveCode} 
                             />
                         </Card.Body> }
 
                             <Card.Footer className = "my-card-footer">
+                                {backnav && <Link to={`${path}/${parseInt(question) - 1}`} >
+                                    {effectiveQuestionNumber === 0 ?
+                                        <Button variant="primary" className="my-btn back" disabled>Back</Button> :
+                                        <Button variant="primary" className="my-btn back" onClick={onPrevious}>Back</Button>
+                                    }
+                                </Link>}
                                 <Link to={`${path}/${parseInt(question) + 1}`} >
                                     {!displayFinish && <Button variant="primary" className="my-btn" onClick={onNext}>Next</Button>}
                                 </Link>

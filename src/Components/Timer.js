@@ -3,14 +3,14 @@
 // This component is used as a timer (Stopwatch)
 
 import React from 'react';
-import { useStopwatch } from 'react-timer-hook';
+import { useTime } from 'react-timer-hook';
 
-function Timer(props) {
-    const {seconds, minutes, hours} = useStopwatch({ autoStart: true });
-
-    // function getTimer(){
-    //     return [hours, minutes, seconds];
-    // }
+function Timer() {
+    const {
+        seconds,
+        minutes,
+        hours,
+      } = useTime({ format: '24-hour'});
     
     return (
         <div>
