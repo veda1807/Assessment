@@ -1,218 +1,190 @@
-import React, { Component } from "react";
+// Author:Sreeevidya
+
+import React, { useEffect, useState } from "react";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
+    useParams,
+    Redirect,
     Link
   } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Row,Col,InputGroup,Form, Modal  } from 'react-bootstrap';
-import isEmpty from '../utils/is-empty';
+import {Card,Button,Row,Col,Form, Modal  } from 'react-bootstrap';
 import NewLine from '../utils/NewLine';
 import CodeQues from './CodeQues.js';
-            
-class Questions extends Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            loading: true,
-            questions: props.questions,
-            currentQuestion: [],
-            nextQuestion: [],
-            previousQuestion: [],
-            answer: [],
-            numberOfQuestions: 0,
-            currentQuestionIndex: 0,
-            score: 0,
-            correctAnswers: 0,
-            wrongAnswers: 0,
-            time: 0,
-            timer: '00:00:00',
-            isFinish: false,
-            intervalId: undefined,
-            totalTimeTaken: '',
-            text: '',
-            studentAnswerList: [], 
-            studentResponse: '', 
-            // displayResponse: '',
-            answeredQuestions: 0
-        };
-    }
+import Timer from './Timer';
 
-    studentInput = (e) =>{
-        this.setState({
-            studentResponse: e.target.value 
-        });
-    }
-    recordAnswer = (e) =>{
-        this.setState({
-            studentAnswerList: [...this.state.studentAnswerList, this.state.studentResponse],
-            // studentResponse: '',
-            displayResponse: 'Your response is recorded',
-            answeredQuestions: this.state.answeredQuestions + 1
-        });
-    }
+function Questions(props) {
 
-    handleClose(){
-        this.setState({show: false});
-    }
+    //search params
+    var { question } = useParams();
+    const effectiveQuestionNumber = parseInt(question) - 1;
 
-    handleShow(){
-        this.setState({show: true});
-    }
+    // Getting session data
+    const sesssionDetails = quizData();
+    const [quizUserData, setQuizUserData] = useState(sesssionDetails);
+    const studentAnsSessionList = ( sesssionDetails &&  sesssionDetails.studentAnswerList ) || {};
+    const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
+        sesssionDetails.studentAnswerList[question]) || "";
+    const count = quizUserData['count'];
 
-    displayQuestion = (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) => {
-      let { currentQuestionIndex, isFinish } = this.state;
-        if( !isEmpty(this.state.questions) ){
-            if(currentQuestionIndex >= questions.length - 1){
-                isFinish = true;
+    // url path
+    const path = props.path; 
+    const questions = props.questions;
+
+    // Checking for finish button visibility
+    const displayFinish = questions.length === 0 || effectiveQuestionNumber === (questions.length - 1);
+
+    // Checking whether the question number is valid or not
+    const isValidQuestionNumber = parseInt(question) === count;
+
+    // Checking the type of the question
+    const type = isValidQuestionNumber ? questions[effectiveQuestionNumber].type : 'no-type';
+
+    // State variables
+    const [showQuitWarning, setShowQuitWarning] = useState(false);
+    const [studentResponse, setStudentResponse] = useState(studentResponceIfExist);
+    const [displayResponse, setDisplayResponse] = useState('');
+    const [studentAnswerList, setStudentAnswerList] = useState(studentAnsSessionList); 
+    const [answeredQuestions, setAnsweredQuestions] = useState(Object.keys(studentAnswerList).length);
+
+    useEffect(() => {
+            window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
+        }, [quizUserData]
+    );
+
+    // Getting the data from session.
+    function quizData() {
+        var sessionData = window.sessionStorage.getItem('quizData');
+        if(sessionData === null){
+            sessionData =  {
+                count: 1,
+                studentAnswerList: {}
             }
-            questions = this.state.questions;
-            currentQuestion = questions[currentQuestionIndex];
-            nextQuestion = questions[currentQuestionIndex + 1];
-            previousQuestion = questions[currentQuestionIndex - 1];
-            //const answer = currentQuestion.answer;
-            this.setState({
-                currentQuestion,
-                nextQuestion,
-                previousQuestion,
-                isFinish
-                //answer
-            });
+        }else{
+            sessionData = JSON.parse(sessionData);
         }
-    };
-
-    displayNextQuestion = () => {
-        let { questions, currentQuestion, nextQuestion, previousQuestion } = this.state;
-        this.setState(prevState => ({
-            currentQuestionIndex: prevState.currentQuestionIndex + 1,
-            // text: ''
-            studentResponse: ''
-        }), () => {
-            this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
-        });
-    };
-
-    onFinish = () => {
-        const{ intervalId, totalTimeTaken, timer} = this.state;
-        clearInterval(intervalId);
-        this.setState({
-            intervalId: undefined
-        });
-        this.props.showResults(this.state);
-        console.log(this.state.totalTimeTaken);
+        return sessionData;
     }
-
-    updateCountdown(){
-        let { time } = this.state;
-        time++;
-        let minutes = Math.floor(time / 60);
-        let hours = Math.floor(minutes / 60);
-        let actMinutes = minutes % 60;
-        let seconds = time % 60;
-      
-        seconds = seconds < 10 ? '0' + seconds : seconds; 
-        actMinutes = actMinutes < 10 ? actMinutes < 1 ? '00' : '0' + actMinutes : actMinutes;
-        hours = hours < 10 ? hours < 1 ? '00' : '0' + hours : hours;
-
-        let timer = ""+hours+":"+actMinutes+":"+seconds;
-      
-        this.setState({
-            time: time,
-            timer: timer
-        });
-    }
-
-    componentDidMount() {
     
-        const {questions, currentQuestion, nextQuestion, previousQuestion} = this.state;
-        this.displayQuestion(questions, currentQuestion, nextQuestion, previousQuestion);
-
-        //set timer
-        var newintervalId = setInterval(this.updateCountdown.bind(this), 1000);
-        this.setState({intervalId: newintervalId});
+    function studentInput(e){
+        setStudentResponse(e.target.value);
     }
 
-    onChangeTeaxtarea = (ele) =>{
-        this.setState({text:ele.target.value});
+    function recordAnswer() {
+        studentAnswerList[question] = studentResponse; 
+        setQuizUserData({
+            count: count,
+            studentAnswerList: studentAnswerList
+        });
+        setStudentAnswerList(studentAnswerList);
+        setTimeout(() => {
+            setDisplayResponse('')
+          }, 3000);
+        setDisplayResponse('Your response is recorded');
+        setAnsweredQuestions(Object.keys(studentAnswerList).length);
     }
 
-    render(){
+    // This method is used to move to next question on clicking on Next button.
+    function onNext() {
+        setStudentResponse('');
+        setDisplayResponse('');
+        setQuizUserData({
+            count: count+1,
+            studentAnswerList: studentAnswerList
+        });
+    }
 
-        const { currentQuestion } = this.state;
-        const questionType = currentQuestion.type;
+    // This method used to show results on clicking the Finish button. 
+    function onFinish() {
 
-        return (
-            <div>  
-                <div className="my-questionpg">
-                    <div  className="sidebar">
-                        <div className="details">
-                            <Row>
-                                
-                                <Col sm="6"><h5 className="text-center">Answered questions : {this.state.answeredQuestions}/{this.state.questions.length}</h5></Col>
-                                <Col sm="6"><h3 className="text-center">{this.state.timer}</h3></Col>
-                                
-                                {/* <Col sm="4"><h5 className="text-right my-deadaline">Deadline : {details[0].Deadline}</h5></Col> */}
-                            </Row>
-                        </div>  
-                    </div>
-                    <div>
-                        <Card className="my-card">
-                            <Card.Header>
-                                <Row>
-                                <Col><h3 className="text-center">Question {this.state.currentQuestionIndex+1}</h3></Col>
-                                {/* <Col sm="6"><label>No of attempts</label>
-                                <ProgressBar className="my-ProgressBar" now={now} label={`${now}%`} /> </Col> */}
+        let timeString = document.getElementsByClassName("timer")[0].innerText.split(':');
+        // console.log(timeString);
+        let params = {
+            questions: questions,
+            timer:[parseInt(timeString[0]), parseInt(timeString[1]), parseInt(timeString[2])],
+            studentAnswerList: studentAnswerList
+        }
+        props.showResults(params);
+    }
+
+    // This method is used to close the quit modal.
+    function handleClose() {
+        setShowQuitWarning(false);
+    }
+
+    // This method is used to show the quit modal on clicking on quit button.
+    function handleShow() {
+        setShowQuitWarning(true);
+    }
+
+    return (
+        // Last edited by : Pragya 
+        <div>
+            { !isValidQuestionNumber &&
+                <Redirect to={`${path}/${count}`} /> }
+            <div className = "my-questionpg">
+                <div className = "sidebar">
+                    <div className = "details">
+                        <Card className = "my-card">
+                            <Card.Header className = "my-card-header">
+                                <Row>                          
+                                    <Col sm="4"><h5 className="text-left align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
+                                    <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
+                                    <Col sm="4"><h5 className="timer text-right align-middle"><Timer /></h5></Col>
                                 </Row>
                             </Card.Header>
 
-                            {/* For fillup type quetions */}
-                            {questionType === "Fillup" &&
+                        {/* For fillup type questions */}
+                            {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
-                                <Card.Text><div className="question"><NewLine className="box" text={currentQuestion.question} /></div></Card.Text>
-                                <Card.Text className="fillups-text">
+                                <div className="question">
+                                    <NewLine className="box" text={questions[effectiveQuestionNumber].question}/>
+                                </div>
+                                <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
-                                        <h5>Answer</h5>
-                                        <Form.Control as="textarea" value={this.state.studentResponse}  rows={3} onChange={this.studentInput} className="my-input"/>
-                                    </Form.Group>
-                                    <h6>{this.state.displayResponse}</h6>
-                                    <Button variant="success" onClick={this.recordAnswer}>Submit</Button> 
-                                </Card.Text>
-                            </Card.Body> }
+                                        <h5> Answer </h5>
+                                        <Form.Control as="textarea"  rows={3} className="my-input" value={studentResponse} onChange={studentInput}/>
+                                    </Form.Group>                               
+                                    <Button variant="success" onClick={recordAnswer}>Submit</Button> 
+                                    <span className="answer_status"><b>{displayResponse}</b></span>
+                                </div>
+                             </Card.Body> }
 
-                            {/* For editor type questions */}
-                            {questionType === "Editor" &&
-                            <Card.Body>
-                                {/* <h5>{currentQuestion.question}</h5> */}
-                                <CodeQues 
-                                    question = {currentQuestion.question}
-                                />
-                            </Card.Body> }
+                        {/* For editor type questions */}
+                        {type === "Editor" &&
+                        <Card.Body>
+                            <CodeQues 
+                                question = {questions[effectiveQuestionNumber].question}
+                            />
+                        </Card.Body> }
 
-                            <Card.Footer>
-                                {!this.state.isFinish && <Button variant="primary"className="my-btn" onClick={this.displayNextQuestion}>Next</Button>}
-                                {this.state.isFinish && <Button variant="primary" className="my-btn" onClick={this.onFinish} >Finish</Button>}
-                                <Button variant="danger" className="my-btn"  onClick={this.handleShow.bind(this)}>Quit</Button>
+                            <Card.Footer className = "my-card-footer">
+                                <Link to={`${path}/${parseInt(question) + 1}`} >
+                                    {!displayFinish && <Button variant="primary" className="my-btn" onClick={onNext}>Next</Button>}
+                                </Link>
+                                <Link to="/quiz/Results" >
+                                    {displayFinish && <Button to="/quiz/Results" variant="primary" className="my-btn" onClick={onFinish}>Finish</Button>}
+                                </Link>
+                                <Button variant="danger" className="my-btn" onClick={handleShow}>Quit</Button>
                                 {/* Show Modal */}
                                 <Modal
-                                    show={this.state.show}
-                                    onHide={this.handleClose.bind(this)}
+                                    show={showQuitWarning}
+                                    onHide={handleClose}
                                     backdrop="static"
                                     keyboard={false}
                                 >
                                     <Modal.Header closeButton>
-                                    <Modal.Title className="text-center">Quit</Modal.Title>
+                                        <Modal.Title className="text-center">Quit</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
-                                    Are you stuck in answering the questions? Quit and go back to learn.
+                                        Are you stuck in answering the questions? Quit and go back to learn.
                                     </Modal.Body>
                                     <Modal.Footer>
-                                    <Button variant="secondary" onClick={this.handleClose.bind(this)}>
-                                        Close
-                                    </Button>
-                                    <Link to="/">
-                                        <Button variant="danger">Quit</Button>
-                                    </Link>
+                                        <Button variant="secondary" onClick={handleClose}>
+                                            Close
+                                        </Button>
+                                        <Link to="/">
+                                            <Button variant="danger" >Quit</Button>
+                                        </Link>
                                     </Modal.Footer>
                                 </Modal>
                                 {/* Modal closed */}
@@ -221,8 +193,8 @@ class Questions extends Component{
                     </div>
                 </div>
             </div>
-    )};
-  }
+        </div>
+    )
+}
   
-  export default Questions;
-
+export default Questions;

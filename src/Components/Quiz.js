@@ -1,45 +1,53 @@
-import React, { useEffect, useState } from "react";
+// Author:Sreeevidya
+
+import React, {useState } from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    useRouteMatch,
+    Route
+  } from "react-router-dom";
 import Instructions from "./Instructions";
-import Questions from "./Questions";
+import Questionss from "./Questionss";
 import Results from "./Results";
 import FetchData from "../utils/FetchData"
+import Start  from "./Start.js";
 
 function Quiz() {
-    const [isInstructions, setIsInstructions] = useState(true);
-    const [isQuestions, setIsQuestions] = useState(false);
-    const [isResults, setIsResults] =useState(false);
-    const [questions, setQuestions] = useState([]);
-    const [instructions, setInstructions] = useState([]);
-    const [answers, setAnswer] = useState([]);
-    const [timeTaken, setTimeTaken] = useState("00:00:00");
+    let { path } = useRouteMatch();
+    const [timer, setTimer] = useState([]);
     const [studentAnswerList, setStudentAnswerList] = useState([])
 
-    // const url = getUrl(props.type);
+    // Fetched instructions and questions data from JSON file using FetchData component. 
+    const {data, isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questions.json'});
 
-    const {data, isLoading, reloadData} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Questionscode.json'});
-
-    function acceptedInstructions(){
-        setIsInstructions(false);
-        setIsQuestions(true);
-        setIsResults(false);
-    }
-
+    // This method is used to show the Results on completion of quiz.
     function showResult(childQuestionsstate){
-        setTimeTaken(childQuestionsstate.timer);
-        setStudentAnswerList(childQuestionsstate.studentAnswerList)
-        setIsInstructions(false);
-        setIsQuestions(false);
-        setIsResults(true);
+        setTimer(childQuestionsstate.timer);
+        setStudentAnswerList(childQuestionsstate.studentAnswerList);
     }
 
     return (
-        <div>
-            {isLoading && <p>Loading...</p>}
-            {!isLoading && isInstructions && <Instructions instructions={data.instructions} onAcceptedInstructions={acceptedInstructions}/>}
-            {!isLoading && isQuestions && <Questions questions={data.questions} showResults = {showResult}/>}
-            {!isLoading && isResults && <Results questions={data.questions}  timeTaken={timeTaken} studentAnswerList={studentAnswerList}/>}
+            
+        <div className="App">
+            {isLoading && <div>Loading...</div>}
+            <Router>
+                <Switch>
+                <Route exact path="/">
+                   <Start />
+                </Route>
+                <Route  path={`${path}/Instructions`}>
+                    {!isLoading && <Instructions instructions={data.instructions} />}
+                </Route>
+                <Route path={`${path}/Questions`}>
+                    {!isLoading  && <Questionss questions={data.questions} showResults = {showResult}/>}
+                </Route>
+                <Route path={`${path}/Results`}>
+                    {!isLoading && <Results questions={data.questions}  timer={timer} studentAnswerList={studentAnswerList}/>}
+                </Route>    
+                </Switch>   
+            </Router>
         </div>
-        
     );
   }
   

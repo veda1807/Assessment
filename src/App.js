@@ -1,19 +1,17 @@
-import logo from './logo.svg';
+// Author:Sreeevidya
+
 import './App.css';
-// import  './index.css';
 import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-
 import Start  from "./Components/Start.js";
-import FillupResults  from "./Components/Results.js";
 import Quiz  from "./Components/Quiz.js";
-// import Programs from './Components/Programs';
+
 function App() {
+
   return (
     <div className="App">
       <Router>
@@ -23,10 +21,7 @@ function App() {
           </Route>
           <Route path="/quiz">
             <Quiz />
-          </Route>
-          {/* <Route path="/programs">
-            <Programs />
-          </Route>   */}
+          </Route> 
         </Switch>   
       </Router>
     </div>

@@ -1,12 +1,15 @@
+// Author : Pragya
+
+// This file creates a code editor using codemirror 6
+
 import React, { useEffect, useRef } from 'react'
 import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
-// import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import {myTheme, myHighlightStyle } from './Style';
 import { python } from '@codemirror/lang-python';
-import "./CodeQues.css";
 
 export default function Editor(props) {
+    
     const {
         setView,
         language,
@@ -51,4 +54,3 @@ export default function Editor(props) {
         <div className="editor-box" ref = {editor}></div>
     )
 }
-

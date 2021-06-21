@@ -1,3 +1,7 @@
+// Author : Pragya
+
+// This file contains styling of the code editor
+
 import {EditorView} from "@codemirror/view"
 import {tags, HighlightStyle} from "@codemirror/highlight"
 
@@ -5,7 +9,7 @@ export const myTheme = EditorView.theme({
     "&": {
       color: "white",
       backgroundColor: "#111",
-      height: "200px",
+      height: "320px",
       width: "100%",
       fontSize: "large"
     },

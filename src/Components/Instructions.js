@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+// Author:Sreeevidya
+
+import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Card,Button,Modal,Form} from 'react-bootstrap';
+import {Card,Button,Form} from 'react-bootstrap';
+import {
+    Link
+  } from "react-router-dom";
 import { For } from 'react-loops';
-import './CodeQues.css'
+
 
 function Instructions(props) {
     var instructions = props.instructions;
     const [disabled, setDisabled] = useState(true);
 
+    // This method enables the submit button on clicking on check me out.
     function onChange() {
         setDisabled(!disabled);
     }
+
     return(
         <div className="my-instructions">
             <Card className="my-card">
@@ -18,7 +25,7 @@ function Instructions(props) {
                     <h3>Instructions</h3>
                 </Card.Header>
                 <Card.Body className="my-cardbody-instructions">
-                    <Card.Text className="instructions-text">
+                    <div className="instructions-text">
                         <ul>
                             <li>Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
                             <li>Clicking on next button moves to next question.</li>
@@ -33,10 +40,12 @@ function Instructions(props) {
                                 </Form.Group>
                             </Form>
                         </ul>
-                    </Card.Text>
+                    </div>
                 </Card.Body> 
                 <Card.Footer>
-                <Button disabled={disabled} onClick={props.onAcceptedInstructions} className="my-btn" variant="success btn-right">Submit</Button>
+                    <Link to = "/quiz/Questions"> 
+                        <Button to="/quiz/Questions" disabled={disabled} className="my-btn" variant="success btn-right">Submit</Button>
+                    </Link> 
                 </Card.Footer>
             </Card>
         </div>
