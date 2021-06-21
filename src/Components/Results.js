@@ -31,9 +31,15 @@ function Results(props) {
   // Fetching the answer data.
   const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
 
+  const studentData = {
+    "attemptedQuestions" : props.studentAnswerList.length,
+    "studentResponses" : props.studentAnswerList,
+    "timeTaken" : diffTime
+  }
+
   fetch("http://localhost:4000/answers", {
     method : "POST",
-    body : JSON.stringify(props.studentAnswerList),
+    body : JSON.stringify(studentData),
     headers : {
       "Content-type": "application/json; charset=UTF-8"
     }
@@ -114,7 +120,6 @@ function Results(props) {
     return difference;
   }
 
-
   return (
     <div className="my-instructions">
       
@@ -123,12 +128,12 @@ function Results(props) {
         <h2 className="text-center my-resultspg">Results</h2>
         <div className="report">
           <Row>
-            <Col sm="6" className="text-center"><b>Score:</b></Col>
-            <Col sm="6" className="text-center"><b>Time:{diffTime}</b></Col>
+            <Col sm="6" className="text-left header"><b>Score: </b></Col>
+            <Col sm="6" className="text-left header"><b>Time: {diffTime}</b></Col>
           </Row>
           <Row>
-            <Col sm="6" className="text-center"><b>Percentage</b>:</Col>
-            <Col sm="6" className="text-center"><b>Status:</b></Col>
+            <Col sm="6" className="text-left header"><b>Percentage: </b></Col>
+            <Col sm="6" className="text-left header"><b>Status: </b></Col>
           </Row>
         </div>
 

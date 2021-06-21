@@ -15,11 +15,10 @@ export default function CodeQues(props) {
     const [result, setResult] = useState("");
     const [openQues, setOpenQues] = useState(true);
     const [openEditor, setOpenEditor] = useState(true);
-    
+
     const runCode = () => {
         if (view === null) return;
         const code = view.state.doc.toString();
-        // console.log(code)
         setResult(code);
     };
 
@@ -65,10 +64,12 @@ export default function CodeQues(props) {
                                     </div>
                                 </div>
                                 ))}
-                                <div className = "explanation">
-                                    <div className = "heading">Explanation</div>
-                                    <NewLine text = {props.question["explanation"]} />
-                                </div>
+                                {props.question["explanation"] != null &&
+                                    <div className = "explanation">
+                                        <div className = "heading">Explanation</div>
+                                        <NewLine text = {props.question["explanation"]} />
+                                    </div>
+                                }
                             </div>
                         }
                     </div>
@@ -91,7 +92,7 @@ export default function CodeQues(props) {
                         <Editor 
                             setView = {setView}
                             language = {props.question["language"]}
-                            content = {props.question["snippet"]}
+                            content = {props.studentResponse}
                             editable = {true}
                         />
                         <Button variant="outline-success" className = "editor-btns submit" size = "sm" onClick = {submitCode}> Submit </Button>
@@ -146,7 +147,7 @@ export default function CodeQues(props) {
                         <Editor 
                             setView = {setView}
                             language = {props.question["language"]}
-                            content = {props.question["snippet"]}
+                            content = {props.studentResponse}
                             editable = {true}
                         />
                         <Button variant="outline-success" className = "editor-btns submit" size = "sm" onClick = {submitCode}> Submit </Button>

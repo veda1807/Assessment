@@ -37,27 +37,39 @@ export const myTheme = EditorView.theme({
 export const myHighlightStyle = HighlightStyle.define([
     {
       tag: tags.keyword, 
-      color: "#E6B0AA"
+      color: "orange"
     },
     {
         tag: tags.comment, 
-        color: "#aaa", 
+        color: "gray", 
         fontStyle: "italic"
     },
     {
         tag: tags.string,
-        color: "#D2B4DE"
+        color: "skyblue"
     },
     {
         tag: tags.name,
-        color: "#F5CBA7"
+        color: "violet"
     },
     {
         tag: tags.bracket,
-        color: "#F5CBA7"
+        color: "white"
     },
     {
         tag: tags.literal,
-        color: "#A9CCE3"
-    }
+        color: "deepskyblue"
+    },
+    {
+        tag: tags.arithmeticOperator,
+        color: "orangered"
+    },
+    {
+        tag: tags.operator,
+        color: "orangered"
+    },
+    {
+        tag: tags.variableName,
+        color: "white"
+    },
     ])

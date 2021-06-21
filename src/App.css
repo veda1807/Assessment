@@ -120,7 +120,7 @@
 }
 
 .coding-question {
-  max-height: 450px;
+  max-height: 42  0px;
   width:100%;
   overflow: auto;
   margin: 10px;
@@ -164,4 +164,8 @@
 
 .answer_status {
   padding-left: 5%;
+}
+
+.report .header {
+  padding-left: 20%;
 }

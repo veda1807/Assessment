@@ -82,7 +82,7 @@ function Questions(props) {
 
     function recordAnswer(code) {
         studentAnswerList[question] = studentResponse; 
-        if (type == 'Editor'){
+        if (type === 'Editor'){
             studentAnswerList[question] = code;
         }
         setQuizUserData({
@@ -165,6 +165,7 @@ function Questions(props) {
         setShowQuitWarning(true);
     }
 
+    // This method is used to save the code for coding questions in the session storage
     function saveCode(code){
         setStudentResponse(code);
         recordAnswer(code);
@@ -183,9 +184,8 @@ function Questions(props) {
                         <Card className = "my-card">
                             <Card.Header className = "my-card-header">
                                 <Row>
-                                    <Col sm=""></Col>
-                                    <Col sm="4"><h4 className="text-center align-middle">Question {parseInt(question)}</h4></Col>
-                                    <Col sm="4"><h5 className="text-right align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
+                                    <Col sm="6"><h4 className="text-left align-middle">Question {parseInt(question)}</h4></Col>
+                                    <Col sm="6"><h5 className="text-right align-middle">Answered questions : {answeredQuestions}/{questions.length}</h5></Col>
                                 </Row>
                             </Card.Header>
 
@@ -215,7 +215,9 @@ function Questions(props) {
                         {type === "Editor" &&
                         <Card.Body>
                             <CodeQues 
-                                question = {questions[effectiveQuestionNumber].question} saveCode = {saveCode} 
+                                question = {questions[effectiveQuestionNumber].question}
+                                studentResponse = {sesssionDetails.studentAnswerList[parseInt(question)] ? sesssionDetails.studentAnswerList[parseInt(question)] : questions[effectiveQuestionNumber].question["snippet"]}
+                                saveCode = {saveCode} 
                             />
                         </Card.Body> }
 
