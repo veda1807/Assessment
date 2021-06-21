@@ -25,10 +25,12 @@ function Results(props) {
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
+  var score = 0;
 
   const diffTime = timeDiffCalc(new Date(startTime), new Date(endTime));
 
   // Fetching the answer data.
+
   const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
 
   const studentData = {
@@ -51,9 +53,25 @@ function Results(props) {
     }, [quizUserData]
   );
 
+  function studentScore() {
+    var score = 0;
+    var totalFillupQuestion = 0;
+    for(let i =0; i < props.questions.length; i++){
+      if(props.questions[i].type === "Fillup" ){
+        totalFillupQuestion =  totalFillupQuestion + 1
+        if (props.questions[i].key === data.answers[i].key){
+          if (data.answers[i].answer === quizData().studentAnswerList[i+1]){
+            score = score + 1
+          }
+        }
+      }
+    }
+    return [score,totalFillupQuestion]
+  }
   // Getting the data from session.
   function quizData() {
     var sessionData = window.sessionStorage.getItem('quizData');
+    var studentanswers = null;
     if(sessionData === null){
         sessionData =  {
             count: 1,
@@ -68,13 +86,14 @@ function Results(props) {
   }
 
 
+  let tdData = {}
   // This code is used to prepare result data to display in the table.
   if(!isLoading && !showResults){
     let tableData = [];
     for(let i =0; i < props.questions.length; i++){
       if(props.questions[i].type === "Fillup" ){
-        setIsFillupExist(true);
-        let tdData = {
+        setIsFillupExist(true);         
+        tdData = {
           key: props.questions[i].key,
           question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
           answer: data.answers[i].answer,
@@ -83,7 +102,7 @@ function Results(props) {
         }
         tableData.push(tdData);
       }
-    }
+    } 
     setTableData(tableData);
     setShowResults(true);
   }
@@ -128,12 +147,12 @@ function Results(props) {
         <h2 className="text-center my-resultspg">Results</h2>
         <div className="report">
           <Row>
-            <Col sm="6" className="text-left header"><b>Score: </b></Col>
-            <Col sm="6" className="text-left header"><b>Time: {diffTime}</b></Col>
+            <Col sm="6" className="text-left header"><b>Score :</b> {studentScore()[0]}/{studentScore()[1]}</Col>
+            <Col sm="6" className="text-left header"><b>Time :</b> {diffTime}</Col>
           </Row>
           <Row>
-            <Col sm="6" className="text-left header"><b>Percentage: </b></Col>
-            <Col sm="6" className="text-left header"><b>Status: </b></Col>
+            <Col sm="6" className="text-left header"><b>Percentage :</b> {Math.ceil(studentScore()[0]/studentScore()[1]*100)}</Col>
+            <Col sm="6" className="text-left header"><b>Status :</b> {Math.ceil(studentScore()[0]/studentScore()[1]*100)>= 80 ? 'Pass' :'Fail' }</Col>         
           </Row>
         </div>
 
