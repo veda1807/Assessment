@@ -4,13 +4,18 @@ import React, { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Card,Button,Form} from 'react-bootstrap';
 import {
-    Link
+    Link,
+    Redirect
   } from "react-router-dom";
 import { For } from 'react-loops';
 
 
 function Instructions(props) {
     var instructions = props.instructions;
+    // fetching session data
+    const sesssionDetails = quizData();
+    const showInstructions = sesssionDetails['instructions'];
+    
     const [disabled, setDisabled] = useState(true);
 
     // This method enables the submit button on clicking on check me out.
@@ -18,8 +23,26 @@ function Instructions(props) {
         setDisabled(!disabled);
     }
 
+    // Getting the data from session.
+  function quizData() {
+    var sessionData = window.sessionStorage.getItem('quizData');
+      if(sessionData === null){
+          sessionData =  {
+              count: 1,
+              studentAnswerList: {},
+              result: false,
+              instructions : false
+          }
+      }else{
+          sessionData = JSON.parse(sessionData);
+      }
+      return sessionData;
+    }
+
     return(
         <div className="my-instructions">
+            { showInstructions && 
+                <Redirect to='/quiz/Results' />}
             <Card className="my-card">
                 <Card.Header className="text-center">
                     <h3>Instructions</h3>
