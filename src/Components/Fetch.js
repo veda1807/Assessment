@@ -1,11 +1,11 @@
-// Author:Sreeevidya
+// Author:Sreevidya
 
-import { useEffect, useState } from "react";
+// This component is used to fetch the details from API.
 
-function FetchData({ url, initialState = null, skip = false }) {
-  
-    const [data, setData] = useState(initialState);
-    const [isLoading, setIsLoading] = useState(true);
+import React, { useEffect, useState } from "react";
+function Fetch({ url, initialState = null, skip = false }) {
+    const [cdata, setData] = useState(initialState);
+    const [isLoad, setIsLoading] = useState(true);
     const [reload, setReload] = useState({}); // used to force running the api fetch in effect
   
     useEffect(() => {
@@ -38,8 +38,9 @@ function FetchData({ url, initialState = null, skip = false }) {
   };
 
   const showError = err => {
+    // your custom error display logic
     alert(err);
   };
 
-  export default FetchData;
+  export default Fetch;
   

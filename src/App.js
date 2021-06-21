@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 // Author:Sreeevidya
 
+=======
+// Author:Sreevidya
+
+import logo from './logo.svg';
+>>>>>>> a0ffd1108555b162d65a08e32762363909e4658e
 import './App.css';
 import React from 'react';
 import {
@@ -21,7 +27,11 @@ function App() {
           </Route>
           <Route path="/quiz">
             <Quiz />
+<<<<<<< HEAD
           </Route> 
+=======
+          </Route>
+>>>>>>> a0ffd1108555b162d65a08e32762363909e4658e
         </Switch>   
       </Router>
     </div>
