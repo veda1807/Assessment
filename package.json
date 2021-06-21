@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@codemirror/basic-setup": "^0.18.1",
+    "@codemirror/basic-setup": "^0.18.2",
     "@codemirror/lang-java": "^0.18.0",
     "@codemirror/lang-python": "^0.18.0",
     "@testing-library/jest-dom": "^5.12.0",

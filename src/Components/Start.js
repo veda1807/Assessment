@@ -10,7 +10,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button} from 'react-bootstrap';
 
 function Start() {
-    
     return (
         <div className="flex-parent jc-center">
             <Link to="/quiz/Instructions">
