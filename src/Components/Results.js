@@ -14,29 +14,70 @@ function Results(props) {
   const sesssionDetails = quizData();
   sesssionDetails['result'] = true;
   sesssionDetails['instructions'] = true;
-  const [quizUserData, setQuizUserData] = useState(sesssionDetails);
+  const endTime = sesssionDetails['endTime'];
+  if(endTime === null){
+    sesssionDetails['endTime'] = new Date();
+  } 
+  const [quizUserData] = useState(sesssionDetails);
+
+  const startTime = sesssionDetails['startTime'];
 
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
+  var score = 0;
+
+  const diffTime = timeDiffCalc(new Date(startTime), new Date(endTime));
 
   // Fetching the answer data.
-  const {data,isLoading} = FetchData({url: 'https://raw.githubusercontent.com/parayathamsreevidya/PublicRepository/main/Answers.json'});
- 
-  useEffect(() => {
+
+  const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
+
+  const studentData = {
+    "attemptedQuestions" : props.studentAnswerList.length,
+    "studentResponses" : props.studentAnswerList,
+    "timeTaken" : diffTime
+  }
+
+  fetch("http://localhost:4000/answers", {
+    method : "POST",
+    body : JSON.stringify(studentData),
+    headers : {
+      "Content-type": "application/json; charset=UTF-8"
+    }
+  })
+    .then(response => response.json())
+  
+  useEffect(() => { 
       window.sessionStorage.setItem('quizData', JSON.stringify(quizUserData));
     }, [quizUserData]
   );
 
+  function studentScore() {
+    var score = 0;
+    var totalFillupQuestion = 0;
+    for(let i =0; i < props.questions.length; i++){
+      if(props.questions[i].type === "Fillup" ){
+        totalFillupQuestion =  totalFillupQuestion + 1
+        if (props.questions[i].key === data.answers[i].key){
+          if (data.answers[i].answer === quizData().studentAnswerList[i+1]){
+            score = score + 1
+          }
+        }
+      }
+    }
+    return [score,totalFillupQuestion]
+  }
   // Getting the data from session.
   function quizData() {
     var sessionData = window.sessionStorage.getItem('quizData');
+    var studentanswers = null;
     if(sessionData === null){
         sessionData =  {
             count: 1,
             studentAnswerList: {},
             result: false,
-            instructions : false
+            instructions : false,
         }
     }else{
         sessionData = JSON.parse(sessionData);
@@ -45,24 +86,58 @@ function Results(props) {
   }
 
 
+  let tdData = {}
   // This code is used to prepare result data to display in the table.
   if(!isLoading && !showResults){
     let tableData = [];
     for(let i =0; i < props.questions.length; i++){
       if(props.questions[i].type === "Fillup" ){
-        setIsFillupExist(true);
-        let tdData = {
+        setIsFillupExist(true);         
+        tdData = {
           key: props.questions[i].key,
-          question: props.questions[i].question,
-          answer: data.answers[i].answer
+          question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
+          answer: data.answers[i].answer,
+        // Edited by Yash
+          correctness: quizData().studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
         }
         tableData.push(tdData);
       }
-    }
+    } 
     setTableData(tableData);
     setShowResults(true);
   }
 
+  function timeDiffCalc(dateFuture, dateNow) {
+    let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;
+
+    // calculate days
+    const days = Math.floor(diffInMilliSeconds / 86400);
+    diffInMilliSeconds -= days * 86400;
+
+    // calculate hours
+    const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+    diffInMilliSeconds -= hours * 3600;
+
+    // calculate minutes
+    const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+    diffInMilliSeconds -= minutes * 60;
+
+    // calculate seconds
+    const seconds = Math.floor(diffInMilliSeconds) % 60;
+
+    let difference = '';
+    if (days > 0) {
+      difference += (days === 1) ? `${days}` : `${days} `;
+    }
+
+    difference += (hours === 0 ? '00:' : hours < 10 ? `0${hours}:` : `${hours}:`);
+
+    difference += (minutes === 0 ? '00:' : minutes < 10 ? `0${minutes}:` : `${minutes}:`); 
+
+    difference += (seconds === 0 ? '00:' : seconds < 10 ? `0${seconds}` : `${seconds}`);  
+
+    return difference;
+  }
 
   return (
     <div className="my-instructions">
@@ -72,12 +147,12 @@ function Results(props) {
         <h2 className="text-center my-resultspg">Results</h2>
         <div className="report">
           <Row>
-            <Col sm="6" className="text-center"><b>Score:</b></Col>
-            <Col sm="6" className="text-center"><b>Time:{props.timer[0] < 10 ? '0'+ props.timer[0] : props.timer[0]}:{props.timer[1] < 10 ? '0'+ props.timer[1] : props.timer[1]}:{props.timer[2] < 10 ? '0'+ props.timer[2] : props.timer[2]}</b></Col>
+            <Col sm="6" className="text-left header"><b>Score :</b> {studentScore()[0]}/{studentScore()[1]}</Col>
+            <Col sm="6" className="text-left header"><b>Time :</b> {diffTime}</Col>
           </Row>
           <Row>
-            <Col sm="6" className="text-center"><b>Percentage</b>:</Col>
-            <Col sm="6" className="text-center"><b>Status:</b></Col>
+            <Col sm="6" className="text-left header"><b>Percentage :</b> {Math.ceil(studentScore()[0]/studentScore()[1]*100)}</Col>
+            <Col sm="6" className="text-left header"><b>Status :</b> {Math.ceil(studentScore()[0]/studentScore()[1]*100)>= 80 ? 'Pass' :'Fail' }</Col>         
           </Row>
         </div>
 
@@ -89,16 +164,17 @@ function Results(props) {
                   <th>#</th>
                   <th>Question</th>
                   <th>Answer</th>
-                  <th>Correctness</th>
+                  <th>Verdict</th>
                 </tr>
               </thead>
               <tbody className="results-tbody">
                 <For of={tableData} as={tdData =>
                 <tr>
                   <td>{tdData.key}</td>
-                  <td><NewLine text={tdData.question}></NewLine></td>
-                  <td>{tdData.answer}</td>
-                  <td></td>
+                  <td><NewLine text={tdData.question}/></td>
+                  <td><NewLine text={tdData.answer}/></td>
+                  {/* Edited by yash */}
+                  <td>{tdData.correctness}</td>
                 </tr>
                }/>
               </tbody>

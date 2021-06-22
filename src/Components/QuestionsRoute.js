@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 import Questions from "./Questions";
 
-function Questionss(props) {  
+function QuestionsRoute(props) {  
   let { path} = useRouteMatch(); 
 
   return (  
@@ -22,10 +22,10 @@ function Questionss(props) {
           <Redirect to={`${path}/1`} />   
         </Route>  
         <Route path={`${path}/:question`}>  
-          <Questions path={path} questions={props.questions} showResults={props.showResults}/>  
+          <Questions path={path} questions={props.questions} showResults={props.showResults} config = {props.config} />  
         </Route>  
     </Switch>  
     </div>  
   );
 }
-export default Questionss;
+export default QuestionsRoute;
