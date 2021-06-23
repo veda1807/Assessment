@@ -7,6 +7,7 @@ import TableScrollbar from 'react-table-scrollbar';
 import { For } from 'react-loops';
 import NewLine from '../utils/NewLine';
 import FetchData from "../utils/FetchData";
+import Editor from './Editor';
 
 function Results(props) {
 
@@ -31,6 +32,10 @@ function Results(props) {
   // Fetching the answer data.
 
   const {data,isLoading} = FetchData({url: 'http://localhost:4000/answerkey'});
+
+
+  // For setting Editor view
+  const [view, setView] = useState(null);
 
   const studentData = {
     "attemptedQuestions" : props.studentAnswerList.length,
@@ -93,11 +98,10 @@ function Results(props) {
         setIsFillupExist(true);         
         tdData = {
           key: props.questions[i].key,
-          // question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
-          stuans: quizData().studentAnswerList[i+1],
-          answer: data.answers[i].answer,
+          question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
+          answer: data.answers[i].answer == undefined ? "" : data.answers[i].answer,
         // Edited by Yash
-          correctness: quizData().studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
+          correctness: sesssionDetails.studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
         }
         tableData.push(tdData);
       }
@@ -161,7 +165,8 @@ function Results(props) {
               <thead className="results-thead">
                 <tr>
                   <th>#</th>
-                  <th>Your Answer</th>
+                  <th>Question</th>
+                  {/* <th>Your Answer</th> */}
                   <th>Correct Answer</th>
                   <th>Verdict</th>
                 </tr>
@@ -170,7 +175,19 @@ function Results(props) {
                 <For of={tableData} as={tdData =>
                 <tr>
                   <td>{tdData.key}</td>
-                  <td><NewLine text={tdData.stuans}/></td>
+                  <td>
+                    {props.questions[parseInt(tdData.key) - 1].question["problem"] != null && 
+                        <NewLine text={props.questions[parseInt(tdData.key) - 1].question["problem"]} />}
+                    {(props.questions[parseInt(tdData.key) - 1].question["snippet"] != null ||
+                      props.questions[parseInt(tdData.key) - 1].question["snippet"] !== "") &&
+                    <Editor 
+                        setView = {setView}
+                        language = {props.questions[parseInt(tdData.key) - 1].question["language"]}
+                        content = {props.questions[parseInt(tdData.key) - 1].question["snippet"]}
+                        editable = {false}
+                    />}
+                  </td>
+                  {/* <td><NewLine text={tdData.stuans}/></td> */}
                   <td><NewLine text={tdData.answer}/></td>
                   {/* Edited by yash */}
                   <td>{tdData.correctness}</td>
