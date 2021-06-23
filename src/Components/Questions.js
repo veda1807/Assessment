@@ -196,7 +196,7 @@ function Questions(props) {
                                     {questions[effectiveQuestionNumber].question["problem"] != null && 
                                         <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />}
                                     {(questions[effectiveQuestionNumber].question["snippet"] != null ||
-                                     questions[effectiveQuestionNumber].question["snippet"] != "") &&
+                                     questions[effectiveQuestionNumber].question["snippet"] !== "") &&
                                         <Editor 
                                             setView = {setView}
                                             language = {questions[effectiveQuestionNumber].question["language"]}
