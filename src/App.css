@@ -72,7 +72,7 @@
 }
 
 .my-cardbody-fillups .question {
-  height: 250px;
+  height: 230px;
   width:100%;
   overflow: auto;
 }
@@ -111,7 +111,7 @@
 
 .results {
   width:80%;
-  margin : 0% 10% 0% 10%;
+  margin : 0% 10% 10% 10% ;
   border: 1px solid black;
 }
 

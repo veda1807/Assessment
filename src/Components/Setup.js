@@ -2,7 +2,7 @@
 
 // This file is a copy of basicsetup provide in codemirror 6 edited as per the program requirements
 
-import { highlightSpecialChars, drawSelection, highlightActiveLine, keymap } from '@codemirror/view';
+import { EditorView, highlightSpecialChars, drawSelection, highlightActiveLine, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { history, historyKeymap } from '@codemirror/history';
 import { foldGutter, foldKeymap } from '@codemirror/fold';
@@ -22,6 +22,11 @@ import { myTheme, myHighlightStyle } from './Style';
 export const setupNonEditable = [
     /*@__PURE__*/lineNumbers(),
     defaultHighlightStyle,
+    EditorView.theme({
+        "&": {
+            height : "200px"
+        }
+    }),
     /*@__PURE__*/keymap.of([
         ...closeBracketsKeymap,
         ...defaultKeymap,
