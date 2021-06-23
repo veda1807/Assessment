@@ -25,7 +25,6 @@ function Results(props) {
   const [showResults, setShowResults] = useState(false);
   const [tableData, setTableData] = useState([]);
   const [isFillupExist, setIsFillupExist] = useState(false);
-  var score = 0;
 
   const diffTime = timeDiffCalc(new Date(startTime), new Date(endTime));
 
@@ -71,7 +70,6 @@ function Results(props) {
   // Getting the data from session.
   function quizData() {
     var sessionData = window.sessionStorage.getItem('quizData');
-    var studentanswers = null;
     if(sessionData === null){
         sessionData =  {
             count: 1,

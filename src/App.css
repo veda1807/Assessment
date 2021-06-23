@@ -84,7 +84,7 @@
 .my-instructions {
   border: 1px solid black;
   margin: 20px;
-  min-height:680px;
+  max-height:680px;
 }
 
 .my-instructions .my-card {
@@ -120,7 +120,7 @@
 }
 
 .coding-question {
-  max-height: 42  0px;
+  max-height: 420px;
   width:100%;
   overflow: auto;
   margin: 10px;

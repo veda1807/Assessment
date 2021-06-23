@@ -193,13 +193,16 @@ function Questions(props) {
                             {type === "Fillup" && 
                             <Card.Body className="my-cardbody-fillups">
                                 <div className="question">
-                                    <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />
-                                    <Editor 
-                                        setView = {setView}
-                                        language = {questions[effectiveQuestionNumber].question["language"]}
-                                        content = {questions[effectiveQuestionNumber].question["snippet"]}
-                                        editable = {false}
-                                    />
+                                    {questions[effectiveQuestionNumber].question["problem"] != null && 
+                                        <NewLine text={questions[effectiveQuestionNumber].question["problem"]} />}
+                                    {(questions[effectiveQuestionNumber].question["snippet"] != null ||
+                                     questions[effectiveQuestionNumber].question["snippet"] != "") &&
+                                        <Editor 
+                                            setView = {setView}
+                                            language = {questions[effectiveQuestionNumber].question["language"]}
+                                            content = {questions[effectiveQuestionNumber].question["snippet"]}
+                                            editable = {false}
+                                        />}
                                 </div>
                                 <div className="fillups-text">
                                     <Form.Group controlId="exampleForm.ControlTextarea1" > 
