@@ -93,7 +93,8 @@ function Results(props) {
         setIsFillupExist(true);         
         tdData = {
           key: props.questions[i].key,
-          question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
+          // question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
+          stuans: quizData().studentAnswerList[i+1],
           answer: data.answers[i].answer,
         // Edited by Yash
           correctness: quizData().studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
@@ -160,8 +161,8 @@ function Results(props) {
               <thead className="results-thead">
                 <tr>
                   <th>#</th>
-                  <th>Question</th>
-                  <th>Answer</th>
+                  <th>Your Answer</th>
+                  <th>Correct Answer</th>
                   <th>Verdict</th>
                 </tr>
               </thead>
@@ -169,7 +170,7 @@ function Results(props) {
                 <For of={tableData} as={tdData =>
                 <tr>
                   <td>{tdData.key}</td>
-                  <td><NewLine text={tdData.question}/></td>
+                  <td><NewLine text={tdData.stuans}/></td>
                   <td><NewLine text={tdData.answer}/></td>
                   {/* Edited by yash */}
                   <td>{tdData.correctness}</td>
