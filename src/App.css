@@ -84,7 +84,7 @@
 .my-instructions {
   border: 1px solid black;
   margin: 20px;
-  max-height:680px;
+  min-height:680px;
 }
 
 .my-instructions .my-card {
@@ -92,7 +92,7 @@
   margin-left:20px;
   margin-right:20px;
   margin-bottom: 80px;
-  min-height : 540px;
+  min-height : 500px;
   width:85%;
   margin-left: 7%;
 }
@@ -111,7 +111,7 @@
 
 .results {
   width:80%;
-  margin : 0% 10% 10% 10% ;
+  margin : 0% 10% 0% 10% ;
   border: 1px solid black;
 }
 

@@ -52,16 +52,16 @@ function Instructions(props) {
                     <div className="instructions-text">
                         <ul>
                             <li> Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
-                            <li> Click on <b>Submit</b> button to save your answers. </li>
-                            <li> Click on <b>Next</b> button to moves to next question. </li>
-                            {backnav && <li> Click on <b>Back</b> button to moves to previous question. </li>}
-                            <li> Click on <b>Finish</b> button to end the test and see results page.</li>
-                            <li> If you are stuck, you can quit by clicking on <b>Quit</b> button, study and come back to the quiz.</li>
+                            <li> Click on <b><i>Submit</i></b> button to save your answers. </li>
+                            <li> Click on <b><i>Next</i></b> button to moves to next question. </li>
+                            {backnav && <li> Click on <b><i>Back</i></b> button to moves to previous question. </li>}
+                            <li> Click on <b><i>Finish</i></b> button to end the test and see results page.</li>
+                            <li> If you are stuck, you can quit by clicking on <b><i>Quit</i></b> button, study and come back to the quiz.</li>
                             <li> 
                                 For Coding Questions:
                                 <ul>
-                                    <li> Click on <b>Submit</b> button to save your code. </li>
-                                    <li> Click on <b>Run</b> button to execute you code. </li> 
+                                    <li> Click on <b><i>Submit</i></b> button to save your code. </li>
+                                    <li> Click on <b><i>Run</i></b> button to execute you code. </li> 
                                 </ul>
                             </li>                            
                             <For of={instructions} as={item =>
