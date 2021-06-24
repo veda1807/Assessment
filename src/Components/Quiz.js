@@ -37,7 +37,7 @@ function Quiz() {
                    <Start />
                 </Route>
                 <Route  path={`${path}/Instructions`}>
-                    {!isLoading && <Instructions instructions={data.instructions} />}
+                    {!isLoading && <Instructions instructions={data.instructions} config = {data.config} />}
                 </Route>
                 <Route path={`${path}/Questions`}>
                 {!isLoading  && <QuestionsRoute questions={data.questions} showResults = {showResult} config = {data.config}/>}

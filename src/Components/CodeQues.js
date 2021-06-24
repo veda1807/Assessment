@@ -19,11 +19,11 @@ export default function CodeQues(props) {
     const runCode = () => {
         if (view === null) return;
         const code = view.state.doc.toString();
-        setResult(code);
+        setResult("Run not implemented");
     };
 
     const submitCode = () => {
-        setResult("Submission yet to be implemented");
+        setResult("Your code is submitted");
         props.saveCode(view.state.doc.toString());
     }
 

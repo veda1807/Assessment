@@ -12,6 +12,7 @@ import { For } from 'react-loops';
 
 function Instructions(props) {
     var instructions = props.instructions;
+    const backnav = props.config.backnav;
     // fetching session data
     const sesssionDetails = quizData();
     const showInstructions = sesssionDetails['instructions'];
@@ -50,10 +51,19 @@ function Instructions(props) {
                 <Card.Body className="my-cardbody-instructions">
                     <div className="instructions-text">
                         <ul>
-                            <li>Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
-                            <li>Clicking on next button moves to next question.</li>
-                            <li>Clicking on finish button ends the test and shows them results page.</li>
-                            <li>If you are stuck, you can quit, learn and come back to the quiz.</li>
+                            <li> Answer every question, unanswered and incomplete questions will not be awarded marks.</li>
+                            <li> Click on <b>Submit</b> button to save your answers. </li>
+                            <li> Click on <b>Next</b> button to moves to next question. </li>
+                            {backnav && <li> Click on <b>Back</b> button to moves to previous question. </li>}
+                            <li> Click on <b>Finish</b> button to end the test and see results page.</li>
+                            <li> If you are stuck, you can quit by clicking on <b>Quit</b> button, study and come back to the quiz.</li>
+                            <li> 
+                                For Coding Questions:
+                                <ul>
+                                    <li> Click on <b>Submit</b> button to save your code. </li>
+                                    <li> Click on <b>Run</b> button to execute you code. </li> 
+                                </ul>
+                            </li>                            
                             <For of={instructions} as={item =>
                                 <li>{item}</li>
                             }/>
