@@ -21,12 +21,13 @@ function Questions(props) {
     // Getting session data
     const sesssionDetails = quizData();
     const [quizUserData, setQuizUserData] = useState(sesssionDetails);
-    const studentAnsSessionList = ( sesssionDetails &&  sesssionDetails.studentAnswerList ) || {};
-    const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
-        sesssionDetails.studentAnswerList[question]) || "";
     const count = quizUserData['count'];
     const startTime = quizUserData['startTime'];
     const showResult = quizUserData['result'];
+    const studentAnsSessionList = ( sesssionDetails &&  sesssionDetails.studentAnswerList ) || {};
+    const studentResponceIfExist = ( sesssionDetails &&  sesssionDetails.studentAnswerList && 
+        sesssionDetails.studentAnswerList[count]) || "";
+    
         
     // url path
     const path = props.path; 
