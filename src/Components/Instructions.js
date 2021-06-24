@@ -59,7 +59,7 @@ function Instructions(props) {
                             }/>
                             <Form>
                                 <Form.Group controlId="formBasicCheckbox">
-                                    <Form.Check type="checkbox" label="Check me out" onChange={onChange}/>
+                                    <Form.Check type="checkbox" label="Agree to the instructions" onChange={onChange}/>
                                 </Form.Group>
                             </Form>
                         </ul>
