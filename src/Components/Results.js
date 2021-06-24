@@ -99,7 +99,7 @@ function Results(props) {
         tdData = {
           key: props.questions[i].key,
           question: props.questions[i].question.problem +"\n"+ props.questions[i].question.snippet,
-          answer: data.answers[i].answer == undefined ? "" : data.answers[i].answer,
+          answer: data.answers[i].answer === undefined ? "" : data.answers[i].answer,
         // Edited by Yash
           correctness: sesssionDetails.studentAnswerList[i+1] === data.answers[i].answer ? 'correct' : 'no score awarded'
         }

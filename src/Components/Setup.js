@@ -24,7 +24,7 @@ export const setupNonEditable = [
     defaultHighlightStyle,
     EditorView.theme({
         "&": {
-            height : "200px"
+            maxHeight : "200px"
         }
     }),
     /*@__PURE__*/keymap.of([
